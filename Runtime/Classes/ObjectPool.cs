@@ -8,8 +8,8 @@ namespace UnpopularOpinion.Tools {
     public class ObjectPool : NetworkBehaviour {
         public PoolableObject objectToPool;
         public int InitialPoolSize = 5;
-        public Transform OriginPoint;
-        private List<PoolableObject> _pool = new();
+
+        protected List<PoolableObject> _pool = new();
 
         public void InitializePool() {
             for (int i = 0; i < InitialPoolSize; i++) {
@@ -44,15 +44,7 @@ namespace UnpopularOpinion.Tools {
             _pool.Add(poolable);
         }
 
-        private void Update() {
-            if (OriginPoint != null) {
-                _pool.ForEach(obj => {
-                    if (!obj.IsActivated) {
-                        obj.transform.position = OriginPoint.position;
-                    }
-                });
-            }
-        }
+
 
         public async Awaitable<PoolableObject> GetPooledGameObject() {
             if (_pool.Any(obj => !obj.IsActivated)) {
