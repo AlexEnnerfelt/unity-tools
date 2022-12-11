@@ -1,0 +1,30 @@
+{
+  "name": "com.ennerfelt.utilities",
+  "version": "0.1.0",
+  "displayName": "Ennerfelt Utilities",
+  "unity": "2019.1",
+  "unityRelease": "0b5",
+  "documentationUrl": "https://github.com/AlexEnnerfelt/UnityUtilities",
+  "changelogUrl": "https://github.com/AlexEnnerfelt/UnityUtilities/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/AlexEnnerfelt/UnityUtilities/blob/main/LICENSE",
+  "keywords": [
+    "Utility",
+    "Extension"
+  ],
+  "author": {
+    "name": "Alex Ennerfelt",
+    "email": "alex.ennerfelt@gmail.com",
+    "url": "https://github.com/AlexEnnerfelt"
+  },
+  "description": "An assortment of utilities that are helpful and also needed for a number of packages",
+
+  "scopedRegistries": [
+    {
+      "name": "AlexEnnerfelt",
+      "url": "https://github.com/AlexEnnerfelt",
+      "scopes": [
+        "com.ennerfelt"
+      ]
+    }
+  ]
+}
