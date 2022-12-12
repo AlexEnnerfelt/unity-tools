@@ -42,10 +42,6 @@ public static class AssemblyUtility
         string[] scriptFiles = GetAllScriptFilesInDirectory(assetsFolderPath, exclude);
         assemblies = GetAssembliesFromScripts(scriptFiles);
         typesTable = GetTypetableFromAssemblies(assemblies);
-
-        foreach (var item in typesTable.Keys) {
-            Debug.Log(item);
-        }
     }
 
     public static string[] GetAllScriptFilesInDirectory(string directoryPath, string excludeDirectory = null) {

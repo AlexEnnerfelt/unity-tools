@@ -4,9 +4,9 @@
   "displayName": "Ennerfelt Utilities",
   "unity": "2019.1",
   "unityRelease": "0b5",
-  "documentationUrl": "https://github.com/AlexEnnerfelt/UnityUtilities",
-  "changelogUrl": "https://github.com/AlexEnnerfelt/UnityUtilities/blob/main/CHANGELOG.md",
-  "licensesUrl": "https://github.com/AlexEnnerfelt/UnityUtilities/blob/main/LICENSE",
+  "documentationUrl": "https://github.com/AlexEnnerfelt/unity-utilities",
+  "changelogUrl": "https://github.com/AlexEnnerfelt/unity-utilities/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/AlexEnnerfelt/unity-utilities/blob/main/LICENSE",
   "keywords": [
     "Utility",
     "Extension"
@@ -16,15 +16,17 @@
     "email": "alex.ennerfelt@gmail.com",
     "url": "https://github.com/AlexEnnerfelt"
   },
+
   "description": "An assortment of utilities that are helpful and also needed for a number of packages",
 
-  "scopedRegistries": [
-    {
-      "name": "AlexEnnerfelt",
-      "url": "https://github.com/AlexEnnerfelt",
-      "scopes": [
-        "com.ennerfelt"
-      ]
-    }
-  ]
+  "dependencies": {
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AlexEnnerfelt/unity-utilities.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }
