@@ -21,12 +21,5 @@
 
   "dependencies": {
 
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/AlexEnnerfelt/unity-utilities.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   }
 }
