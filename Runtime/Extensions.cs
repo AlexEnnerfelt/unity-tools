@@ -4,8 +4,9 @@ using UnityEngine;
 using System;
 using System.Text.RegularExpressions;
 
-public static class ColorUtility
+public static class EnnerfeltExtensions
 {
+    //Color Extensions
     public static string GetHexcode(this Color c) {
         string hex = "";
         byte[] bytes = {
@@ -23,7 +24,6 @@ public static class ColorUtility
             return i;
         }
     }
-
     public static string GetHexcode(this Color32 c) {
         string hex = "";
         byte[] bytes = {

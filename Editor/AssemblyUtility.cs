@@ -14,13 +14,18 @@ public static class AssemblyUtility
     public static Dictionary<string, Type> typesTable { get; private set; }
 
     static AssemblyUtility() {
-        // This is the path to the Assets folder in your Unity project
-        string assetsFolderPath = "Assets";
-        string exclude = "Plugins";
+        try {
+            // This is the path to the Assets folder in your Unity project
+            string assetsFolderPath = "Assets";
+            string exclude = "Plugins";
 
-        string[] scriptFiles = GetAllScriptFilesInDirectory(assetsFolderPath, exclude);
-        assemblies = GetAssembliesFromScripts(scriptFiles);
-        typesTable = GetTypetableFromAssemblies(assemblies);
+            string[] scriptFiles = GetAllScriptFilesInDirectory(assetsFolderPath, exclude);
+            assemblies = GetAssembliesFromScripts(scriptFiles);
+            typesTable = GetTypetableFromAssemblies(assemblies);
+        }
+        catch (Exception) {
+
+        }
     }
 
     public static string[] GetAllScriptFilesInDirectory(string directoryPath, string excludeDirectory = null) {
