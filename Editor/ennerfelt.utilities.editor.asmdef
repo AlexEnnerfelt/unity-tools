@@ -1,3 +1,16 @@
 {
-	"name": "ennerfelt.utilities.editor"
+    "name": "ennerfelt.utilities.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:94cb8d9542404f044b4dc6fcd6aefccb"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

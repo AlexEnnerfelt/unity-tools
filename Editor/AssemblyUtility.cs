@@ -10,31 +10,10 @@ using System.Linq;
 [InitializeOnLoad]
 public static class AssemblyUtility
 {
-    public static Assembly[] assemblies;
-    public static Dictionary<string, Type> typesTable;
+    public static Assembly[] assemblies { get; private set; }
+    public static Dictionary<string, Type> typesTable { get; private set; }
 
     static AssemblyUtility() {
-
-        #region MyRegion
-        //foreach (var appAssembly in System.AppDomain.CurrentDomain.GetAssemblies()) {
-        //    foreach (var unityCompileAssembly in CompilationPipeline.GetAssemblies()) {
-        //        if (appAssembly.GetName().Name == unityCompileAssembly.name) {
-        //            assemblies.Add(appAssembly);
-        //        }
-        //    }
-        //}
-
-        //foreach (var item in assemblies) {
-        //    foreach (var type in item.GetTypes()) {
-        //        try {
-        //            types.Add($"{type.FullName}", type);
-        //        }
-        //        catch (Exception) {
-        //        }
-        //    }
-        //} 
-        #endregion
-
         // This is the path to the Assets folder in your Unity project
         string assetsFolderPath = "Assets";
         string exclude = "Plugins";
