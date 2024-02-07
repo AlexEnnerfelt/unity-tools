@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public static class EnnerfeltExtensions {
+public static class Extensions {
 	//Color Extensions
 	public static string GetHexcode(this Color c) {
 		var hex = "";
@@ -43,6 +43,8 @@ public static class EnnerfeltExtensions {
 		}
 		return children;
 	}
+
+	//Object model extensions
 	public static void CopyPropertiesTo<T>(this T source, T dest) {
 		var plist = from prop in typeof(T).GetProperties() where prop.CanRead && prop.CanWrite select prop;
 
@@ -72,6 +74,8 @@ public static class EnnerfeltExtensions {
 			fieldInfo.SetValue(destination, value);
 		}
 	}
+
+	//Component assignment extension
 	public static bool TryGetComponentInParent<T>(this GameObject obj, out T component) where T : Component {
 		if (obj.TryGetComponent(out component)) {
 			return true;
@@ -98,5 +102,30 @@ public static class EnnerfeltExtensions {
 	}
 	public static bool TryGetComponentsInChildren<T>(this Behaviour obj, out T[] components) {
 		return obj.gameObject.TryGetComponentsInChildren<T>(out components);
+	}
+
+	//Layer extensions
+	public static bool Contains(this LayerMask mask, int layer) {
+		return (mask.value & (1 << layer)) != 0;
+	}
+
+	//Vector extensions
+	public static Vector3 NormalizedToEuler(this Vector3 normalizedVector) {
+		if (normalizedVector.x > 1 || normalizedVector.x < -1 || normalizedVector.y > 1 || normalizedVector.y < -1) {
+			Debug.LogError("This vector is not normalized and will return zero");
+			return Vector3.zero;
+		}
+		var angle = Mathf.Atan2(normalizedVector.y, normalizedVector.x) * Mathf.Rad2Deg;
+		var eulerAngle = new Vector3(0, 0, angle);
+		return eulerAngle;
+	}
+	public static Vector3 NormalizedToEuler(this Vector2 normalizedVector) {
+		if (normalizedVector.x > 1 || normalizedVector.x < -1 || normalizedVector.y > 1 || normalizedVector.y < -1) {
+			Debug.LogError("This vector is not normalized and will return zero");
+			return Vector2.zero;
+		}
+		var angle = Mathf.Atan2(normalizedVector.y, normalizedVector.x) * Mathf.Rad2Deg;
+		var eulerAngle = new Vector3(0, 0, angle);
+		return eulerAngle;
 	}
 }
