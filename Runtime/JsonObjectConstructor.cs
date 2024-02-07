@@ -49,7 +49,7 @@ public static class JsonObjectConstructor {
 			}
 			try {
 				result = jToken.ToObject<T>(JsonSerializer.Create(settings));
-			} catch (Exception) {
+			} catch (JsonReaderException e) {
 				result = default;
 				return false;
 			}
