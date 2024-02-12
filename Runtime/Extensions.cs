@@ -128,4 +128,10 @@ public static class Extensions {
 		var eulerAngle = new Vector3(0, 0, angle);
 		return eulerAngle;
 	}
+
+	//Audio extensions
+	public static float DecibelToLinear(this float decibel) {
+		var linear = Mathf.Pow(10f, decibel / 20f);
+		return linear;
+	}
 }
