@@ -1,7 +1,7 @@
 {
-  "name": "com.ennerfelt.utilities",
+  "name": "com.unpopular-opinion.tools",
   "version": "0.1.7",
-  "displayName": "Ennerfelt Utilities",
+  "displayName": "Tools",
   "unity": "2019.1",
   "unityRelease": "0b5",
   "documentationUrl": "https://github.com/AlexEnnerfelt/unity-utilities",
@@ -12,7 +12,7 @@
     "Extension"
   ],
   "author": {
-    "name": "Alex Ennerfelt",
+    "name": "Unpopular Opinion",
     "email": "alex.ennerfelt@gmail.com",
     "url": "https://github.com/AlexEnnerfelt"
   },

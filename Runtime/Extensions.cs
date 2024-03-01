@@ -35,6 +35,13 @@ public static class Extensions {
 		hex = Regex.Replace(hex, "-", "");
 		return $"#{hex}";
 	}
+	public static Color32 FadeAlpha(this Color32 color, float normalizedAlpha) {
+		var newAlpha = (byte)(normalizedAlpha * 255);
+		return new Color32(color.r, color.g, color.b, newAlpha);
+	}
+	public static Color FadeAlpha(this Color color, float normalizedAlpha) {
+		return new Color(color.r, color.g, color.b, normalizedAlpha);
+	}
 	public static Transform[] GetChildren(this Transform transform) {
 		var count = transform.childCount;
 		var children = new Transform[count];
