@@ -2,7 +2,7 @@
     "name": "ennerfelt.utilities.editor",
     "rootNamespace": "",
     "references": [
-        "GUID:94cb8d9542404f044b4dc6fcd6aefccb"
+        "GUID:9c69e2703f50f304b972f9e1ec2e25fe"
     ],
     "includePlatforms": [
         "Editor"

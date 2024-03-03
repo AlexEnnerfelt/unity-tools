@@ -30,9 +30,8 @@ public static class JsonObjectConstructor {
 		// Try to get a JsonToken from from the JsonObject and ignore wether it's camel or pascal case
 		if (jsonObject.TryGetValue(key, StringComparison.OrdinalIgnoreCase, out var jToken)) {
 			var settings = new JsonSerializerSettings();
-			foreach (var converter in converters) {
-				settings.Converters.Add(converter);
-			}
+			converters.ForEach(con => settings.Converters.Add(con));
+
 
 			return jToken.ToObject<T>();
 		} else {
@@ -44,12 +43,11 @@ public static class JsonObjectConstructor {
 		var trimmedKey = key.TrimStart('_');
 		if (jsonObject.TryGetValue(trimmedKey, StringComparison.OrdinalIgnoreCase, out var jToken)) {
 			var settings = new JsonSerializerSettings();
-			foreach (var converter in converters) {
-				settings.Converters.Add(converter);
-			}
+			converters.ForEach(con => settings.Converters.Add(con));
+
 			try {
 				result = jToken.ToObject<T>(JsonSerializer.Create(settings));
-			} catch (JsonReaderException e) {
+			} catch (JsonReaderException) {
 				result = default;
 				return false;
 			}
