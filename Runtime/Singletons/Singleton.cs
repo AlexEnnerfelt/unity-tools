@@ -18,11 +18,6 @@ public class Singleton<T> : MonoBehaviour where T : Component {
 		get {
 			if (_instance == null) {
 				_instance = FindAnyObjectByType<T>(FindObjectsInactive.Include);
-				if (_instance == null) {
-					var obj = new GameObject();
-					obj.name = typeof(T).Name + "_AutoCreated";
-					_instance = obj.AddComponent<T>();
-				}
 			}
 			return _instance;
 		}
