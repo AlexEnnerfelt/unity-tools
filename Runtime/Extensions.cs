@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -50,6 +51,24 @@ public static class Extensions {
 		}
 		return children;
 	}
+	public static Transform[] GetAllChildren(this Transform parent) {
+		var allChildren = new List<Transform>();
+		GetChildRecursive(parent, allChildren);
+		return allChildren.ToArray();
+	}
+
+	private static void GetChildRecursive(Transform obj, List<Transform> childrenList) {
+		if (obj == null)
+			return;
+
+		foreach (Transform child in obj) {
+			if (child == null)
+				continue;
+
+			childrenList.Add(child);
+			GetChildRecursive(child, childrenList);
+		}
+	}
 
 	//Object model extensions
 	public static void CopyPropertiesTo<T>(this T source, T dest) {
@@ -84,6 +103,9 @@ public static class Extensions {
 
 	//Component assignment extension
 	public static bool TryGetComponentInParent<T>(this GameObject obj, out T component) where T : Component {
+		return obj.transform.TryGetComponentInParent(out component);
+	}
+	public static bool TryGetComponentInParent<T>(this Component obj, out T component) where T : Component {
 		if (obj.TryGetComponent(out component)) {
 			return true;
 		} else {
@@ -91,15 +113,32 @@ public static class Extensions {
 		}
 		return component != null;
 	}
-	public static bool TryGetComponentInParent<T>(this Behaviour obj, out T component) {
+	public static bool TryGetComponentsInParent<T>(this GameObject obj, out T component) where T : Component {
+		return obj.TryGetComponentsInParent(out component);
+	}
+	public static bool TryGetComponentsInParent<T>(this Component obj, out T component) where T : Component {
 		if (obj.TryGetComponent(out component)) {
 			return true;
 		} else {
 			component = obj.GetComponentInParent<T>();
+		}
+		return component != null;
+	}
+	public static bool TryGetComponentInChildren<T>(this GameObject obj, out T component) {
+		return obj.transform.TryGetComponentInChildren(out component);
+	}
+	public static bool TryGetComponentInChildren<T>(this Component obj, out T component) {
+		if (obj.TryGetComponent(out component)) {
+			return true;
+		} else {
+			component = obj.GetComponentInChildren<T>();
 		}
 		return component != null;
 	}
 	public static bool TryGetComponentsInChildren<T>(this GameObject obj, out T[] components) {
+		return obj.transform.TryGetComponentsInChildren(out components);
+	}
+	public static bool TryGetComponentsInChildren<T>(this Component obj, out T[] components) {
 		components = obj.GetComponentsInChildren<T>();
 		if (components == null || components.Length < 1) {
 			return false;
@@ -107,8 +146,15 @@ public static class Extensions {
 			return true;
 		}
 	}
-	public static bool TryGetComponentsInChildren<T>(this Behaviour obj, out T[] components) {
-		return obj.gameObject.TryGetComponentsInChildren<T>(out components);
+	public static bool TryGetComponentAround<T>(this GameObject obj, out T components, bool parentFirst = true) where T : Component {
+		return obj.transform.TryGetComponentAround(out components, parentFirst);
+	}
+	public static bool TryGetComponentAround<T>(this Component obj, out T components, bool parentFirst = true) where T : Component {
+		components = parentFirst ? obj.GetComponentInParent<T>() : obj.GetComponentInChildren<T>();
+		if (components == null) {
+			components = parentFirst ? obj.GetComponentInChildren<T>() : obj.GetComponentInParent<T>();
+		}
+		return components != null;
 	}
 
 	//Layer extensions

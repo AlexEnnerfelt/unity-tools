@@ -1,12 +1,8 @@
 {
-    "name": "ennerfelt.utilities.editor",
+    "name": "UnpopularOpinion.Tools",
     "rootNamespace": "",
-    "references": [
-        "UnpopularOpinion.Tools.Runtime"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

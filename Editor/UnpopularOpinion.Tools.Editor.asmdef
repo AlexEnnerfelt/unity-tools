@@ -1,8 +1,12 @@
 {
-    "name": "UnpopularOpinion.Tools.Runtime",
+    "name": "UnpopularOpinion.Tools.Editor",
     "rootNamespace": "",
-    "references": [],
-    "includePlatforms": [],
+    "references": [
+        "GUID:9c69e2703f50f304b972f9e1ec2e25fe"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

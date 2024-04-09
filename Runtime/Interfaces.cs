@@ -49,8 +49,8 @@ public interface IStaticRefereable<T> where T : ScriptableObject {
 
 #if UNITY_EDITOR
 			UnityEditor.EditorUtility.SetDirty(value);
-			UnityEditor.AssetDatabase.SaveAssetIfDirty(value);
-			UnityEditor.AssetDatabase.Refresh();
+			//UnityEditor.AssetDatabase.SaveAssetIfDirty(value);
+			//UnityEditor.AssetDatabase.Refresh();
 #endif
 		}
 	}

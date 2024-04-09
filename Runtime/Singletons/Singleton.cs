@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour where T : Component {
 	public static bool HasInstance => _instance != null;
-	public static T Current => _instance;
 
 	protected static T _instance;
 	protected bool _enabled;
@@ -34,9 +33,9 @@ public class Singleton<T> : MonoBehaviour where T : Component {
 	/// Initializes the singleton.
 	/// </summary>
 	protected virtual void InitializeSingleton() {
-		if (!Application.isPlaying) {
-			return;
-		}
+		//if (!Application.isPlaying) {
+		//	return;
+		//}
 
 		if (_instance == null) {
 			//If I am the first instance, make me the Singleton
@@ -49,7 +48,7 @@ public class Singleton<T> : MonoBehaviour where T : Component {
 			//If a Singleton already exists and you find
 			//another reference in scene, destroy it!
 			if (this != _instance) {
-				Destroy(this.gameObject);
+				Destroy(gameObject);
 			}
 		}
 	}
