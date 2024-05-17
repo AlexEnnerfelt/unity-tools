@@ -102,24 +102,26 @@ public static class Extensions {
 	}
 
 	//Component assignment extension
-	public static bool TryGetComponentInParent<T>(this GameObject obj, out T component) where T : Component {
+	public static bool TryGetComponentInParent<T>(this GameObject obj, out T component) {
 		return obj.transform.TryGetComponentInParent(out component);
 	}
-	public static bool TryGetComponentInParent<T>(this Component obj, out T component) where T : Component {
+	public static bool TryGetComponentInParent<T>(this Component obj, out T component) {
 		if (obj.TryGetComponent(out component)) {
 			return true;
-		} else {
+		}
+		else {
 			component = obj.GetComponentInParent<T>();
 		}
 		return component != null;
 	}
-	public static bool TryGetComponentsInParent<T>(this GameObject obj, out T component) where T : Component {
+	public static bool TryGetComponentsInParent<T>(this GameObject obj, out T component) {
 		return obj.TryGetComponentsInParent(out component);
 	}
-	public static bool TryGetComponentsInParent<T>(this Component obj, out T component) where T : Component {
+	public static bool TryGetComponentsInParent<T>(this Component obj, out T component) {
 		if (obj.TryGetComponent(out component)) {
 			return true;
-		} else {
+		}
+		else {
 			component = obj.GetComponentInParent<T>();
 		}
 		return component != null;
@@ -130,7 +132,8 @@ public static class Extensions {
 	public static bool TryGetComponentInChildren<T>(this Component obj, out T component) {
 		if (obj.TryGetComponent(out component)) {
 			return true;
-		} else {
+		}
+		else {
 			component = obj.GetComponentInChildren<T>();
 		}
 		return component != null;
@@ -142,14 +145,15 @@ public static class Extensions {
 		components = obj.GetComponentsInChildren<T>();
 		if (components == null || components.Length < 1) {
 			return false;
-		} else {
+		}
+		else {
 			return true;
 		}
 	}
-	public static bool TryGetComponentAround<T>(this GameObject obj, out T components, bool parentFirst = true) where T : Component {
+	public static bool TryGetComponentAround<T>(this GameObject obj, out T components, bool parentFirst = true) {
 		return obj.transform.TryGetComponentAround(out components, parentFirst);
 	}
-	public static bool TryGetComponentAround<T>(this Component obj, out T components, bool parentFirst = true) where T : Component {
+	public static bool TryGetComponentAround<T>(this Component obj, out T components, bool parentFirst = true) {
 		components = parentFirst ? obj.GetComponentInParent<T>() : obj.GetComponentInChildren<T>();
 		if (components == null) {
 			components = parentFirst ? obj.GetComponentInChildren<T>() : obj.GetComponentInParent<T>();
@@ -186,5 +190,47 @@ public static class Extensions {
 	public static float DecibelToLinear(this float decibel) {
 		var linear = Mathf.Pow(10f, decibel / 20f);
 		return linear;
+	}
+}
+
+public static class ListExtensions {
+	private static System.Random rand = new();
+
+	public static T TakeRandom<T>(this IEnumerable<T> enumerable) {
+		if (!enumerable.Any()) {
+			throw new InvalidOperationException("Cannot select a random item from an empty set");
+		}
+
+		T item;
+		do {
+			item = enumerable.ElementAt(rand.Next(enumerable.Count()));
+		}
+		while (item == null);
+
+		return item;
+	}
+}
+
+public static class Vector2Extensions {
+	public static Vector2 GetPointWithinRadius(this Vector2 center, float radius) {
+		// Generate a random angle between 0 and 2*PI
+		float angle = UnityEngine.Random.Range(0f, 2f * Mathf.PI);
+
+		// Calculate the x and y position using the angle and radius
+		float x = center.x + radius * Mathf.Cos(angle);
+		float y = center.y + radius * Mathf.Sin(angle);
+
+		return new Vector2(x, y);
+	}
+	public static Vector2 GetPointWithinRadius(this Vector3 center, float radius) {
+		// Generate a random angle between 0 and 2*PI
+		float angle = UnityEngine.Random.Range(0f, 2f * Mathf.PI);
+		float randomRadius = UnityEngine.Random.Range(0f, radius);
+
+		// Calculate the x and y position using the angle and radius
+		float x = center.x + randomRadius * Mathf.Cos(angle);
+		float y = center.y + randomRadius * Mathf.Sin(angle);
+
+		return new Vector2(x, y);
 	}
 }
