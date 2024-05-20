@@ -485,7 +485,12 @@ namespace Unity.Netcode
 
         internal void MarkNetworkObjectDirty()
         {
-            MarkNetworkBehaviourDirty();
+            try {
+                MarkNetworkBehaviourDirty();
+            }
+            catch (System.Exception) {
+
+            }
         }
 
         public override void Dispose()

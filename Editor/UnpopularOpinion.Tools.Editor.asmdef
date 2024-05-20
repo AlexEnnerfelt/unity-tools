@@ -2,7 +2,7 @@
     "name": "UnpopularOpinion.Tools.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:9c69e2703f50f304b972f9e1ec2e25fe",
+        "GUID:25212cbed26ee2645b733e84bf8568ef",
         "GUID:e0cd26848372d4e5c891c569017e11f1"
     ],
     "includePlatforms": [

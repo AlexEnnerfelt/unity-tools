@@ -33,9 +33,11 @@ namespace Unity.Netcode {
 
 
 		private Rigidbody2D _rigidBody2D;
-		private Vector2 Velocity => _rigidBody2D.velocity;
+		private IVelocity2DTracker _velocityTracker;
+		private Vector2 Velocity => _velocityTracker.Velocity2D;
 		public void Awake() {
 			_rigidBody2D = GetComponent<Rigidbody2D>();
+			_velocityTracker = GetComponent<IVelocity2DTracker>();
 		}
 		public void FixedUpdate() {
 			SendUpdatePosition();
@@ -161,5 +163,9 @@ namespace Unity.Netcode {
 
 		public half x;
 		public half y;
+	}
+
+	public interface IVelocity2DTracker {
+		Vector2 Velocity2D { get; }
 	}
 }
