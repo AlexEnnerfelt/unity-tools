@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 
-namespace Unity.Netcode
-{
+namespace Unity.Netcode {
     /// <summary>
     /// Event based NetworkVariable container for syncing Dictionaries
     /// </summary>
@@ -13,10 +12,8 @@ namespace Unity.Netcode
     /// <typeparam name="TValue">The type for the dictionary values</typeparam>
     public class NetworkDictionary<TKey, TValue> : NetworkVariableBase
         where TKey : unmanaged, IEquatable<TKey>
-        where TValue : unmanaged
-    {
-        public struct Enumerator : IEnumerator<(TKey Key, TValue Value)>
-        {
+        where TValue : unmanaged {
+        public struct Enumerator : IEnumerator<(TKey Key, TValue Value)> {
             private NativeArray<TKey> keys;
             private NativeArray<TKey>.Enumerator keysEnumerator;
             private NativeArray<TValue> values;
@@ -26,8 +23,7 @@ namespace Unity.Netcode
 
             object IEnumerator.Current => Current;
 
-            public Enumerator(ref NativeList<TKey> keys, ref NativeList<TValue> values)
-            {
+            public Enumerator(ref NativeList<TKey> keys, ref NativeList<TValue> values) {
                 this.keys = keys.AsArray();
                 this.values = values.AsArray();
                 keysEnumerator = new NativeArray<TKey>.Enumerator(ref this.keys);
@@ -36,16 +32,14 @@ namespace Unity.Netcode
 
             public void Dispose() { }
 
-            public bool MoveNext()
-            {
+            public bool MoveNext() {
                 var keysEnumeratorCanMove = keysEnumerator.MoveNext();
                 var valuesEnumeratorCanMove = valuesEnumerator.MoveNext();
 
                 return keysEnumeratorCanMove && valuesEnumeratorCanMove;
             }
 
-            public void Reset()
-            {
+            public void Reset() {
                 keysEnumerator.Reset();
                 valuesEnumerator.Reset();
             }
@@ -78,10 +72,8 @@ namespace Unity.Netcode
         /// </summary>
         /// <param name="readPerm">The read permission to use for the NetworkDictionary</param>
         /// <param name="values">The initial value to use for the NetworkDictionary</param>
-        public NetworkDictionary(NetworkVariableReadPermission readPerm, IDictionary<TKey, TValue> values) : base(readPerm)
-        {
-            foreach (var pair in values)
-            {
+        public NetworkDictionary(NetworkVariableReadPermission readPerm, IDictionary<TKey, TValue> values) : base(readPerm) {
+            foreach (var pair in values) {
                 m_Keys.Add(pair.Key);
                 m_Values.Add(pair.Value);
             }
@@ -91,22 +83,18 @@ namespace Unity.Netcode
         /// Creates a NetworkDictionary with a custom value and custom settings
         /// </summary>
         /// <param name="values">The initial value to use for the NetworkDictionary</param>
-        public NetworkDictionary(IDictionary<TKey, TValue> values)
-        {
-            foreach (var pair in values)
-            {
+        public NetworkDictionary(IDictionary<TKey, TValue> values) {
+            foreach (var pair in values) {
                 m_Keys.Add(pair.Key);
                 m_Values.Add(pair.Value);
             }
         }
 
         /// <inheritdoc />
-        public override void ResetDirty()
-        {
+        public override void ResetDirty() {
             base.ResetDirty();
 
-            if (m_DirtyEvents.Length > 0)
-            {
+            if (m_DirtyEvents.Length > 0) {
                 m_DirtyEvents.Clear();
                 m_KeysAtLastReset.CopyFrom(m_Keys);
                 m_ValuesAtLastReset.CopyFrom(m_Values);
@@ -117,10 +105,8 @@ namespace Unity.Netcode
         public override bool IsDirty() => base.IsDirty() || m_DirtyEvents.Length > 0;
 
         /// <inheritdoc />
-        public override void WriteDelta(FastBufferWriter writer)
-        {
-            if (base.IsDirty())
-            {
+        public override void WriteDelta(FastBufferWriter writer) {
+            if (base.IsDirty()) {
                 writer.WriteValueSafe((ushort)1);
                 writer.WriteValueSafe(NetworkDictionaryEvent<TKey, TValue>.EventType.Full);
                 WriteField(writer);
@@ -130,32 +116,26 @@ namespace Unity.Netcode
 
             writer.WriteValueSafe((ushort)m_DirtyEvents.Length);
 
-            for (int i = 0; i < m_DirtyEvents.Length; i++)
-            {
+            for (int i = 0; i < m_DirtyEvents.Length; i++) {
                 var element = m_DirtyEvents.ElementAt(i);
                 writer.WriteValueSafe(m_DirtyEvents[i].Type);
 
-                switch (m_DirtyEvents[i].Type)
-                {
-                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Add:
-                        {
+                switch (m_DirtyEvents[i].Type) {
+                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Add: {
                             NetworkVariableSerialization<TKey>.Write(writer, ref element.Key);
                             NetworkVariableSerialization<TValue>.Write(writer, ref element.Value);
                         }
                         break;
-                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Remove:
-                        {
+                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Remove: {
                             NetworkVariableSerialization<TKey>.Write(writer, ref element.Key);
                         }
                         break;
-                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Value:
-                        {
+                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Value: {
                             NetworkVariableSerialization<TKey>.Write(writer, ref element.Key);
                             NetworkVariableSerialization<TValue>.Write(writer, ref element.Value);
                         }
                         break;
-                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Clear:
-                        {
+                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Clear: {
                         }
                         break;
                 }
@@ -163,30 +143,25 @@ namespace Unity.Netcode
         }
 
         /// <inheritdoc />
-        public override void WriteField(FastBufferWriter writer)
-        {
+        public override void WriteField(FastBufferWriter writer) {
             // The keysAtLastReset and valuesAtLastReset mechanism was put in place to deal with duplicate adds
             // upon initial spawn. However, it causes issues with in-scene placed objects
             // due to difference in spawn order. In order to address this, we pick the right
             // list based on the type of object.
             bool isSceneObject = GetBehaviour().NetworkObject.IsSceneObject != false;
 
-            if (isSceneObject)
-            {
+            if (isSceneObject) {
                 writer.WriteValueSafe((ushort)m_KeysAtLastReset.Length);
 
-                for (int i = 0; i < m_KeysAtLastReset.Length; i++)
-                {
+                for (int i = 0; i < m_KeysAtLastReset.Length; i++) {
                     NetworkVariableSerialization<TKey>.Write(writer, ref m_KeysAtLastReset.ElementAt(i));
                     NetworkVariableSerialization<TValue>.Write(writer, ref m_ValuesAtLastReset.ElementAt(i));
                 }
             }
-            else
-            {
+            else {
                 writer.WriteValueSafe((ushort)m_Keys.Length);
 
-                for (int i = 0; i < m_Keys.Length; i++)
-                {
+                for (int i = 0; i < m_Keys.Length; i++) {
                     NetworkVariableSerialization<TKey>.Write(writer, ref m_Keys.ElementAt(i));
                     NetworkVariableSerialization<TValue>.Write(writer, ref m_Values.ElementAt(i));
                 }
@@ -194,15 +169,13 @@ namespace Unity.Netcode
         }
 
         /// <inheritdoc />
-        public override void ReadField(FastBufferReader reader)
-        {
+        public override void ReadField(FastBufferReader reader) {
             m_Keys.Clear();
             m_Values.Clear();
 
             reader.ReadValueSafe(out ushort count);
 
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 var value = new TValue();
                 var key = new TKey();
                 NetworkVariableSerialization<TKey>.Read(reader, ref key);
@@ -213,42 +186,34 @@ namespace Unity.Netcode
         }
 
         /// <inheritdoc />
-        public override void ReadDelta(FastBufferReader reader, bool keepDirtyDelta)
-        {
+        public override void ReadDelta(FastBufferReader reader, bool keepDirtyDelta) {
             reader.ReadValueSafe(out ushort deltaCount);
 
-            for (int i = 0; i < deltaCount; i++)
-            {
+            for (int i = 0; i < deltaCount; i++) {
                 reader.ReadValueSafe(out NetworkDictionaryEvent<TKey, TValue>.EventType eventType);
 
-                switch (eventType)
-                {
-                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Add:
-                        {
+                switch (eventType) {
+                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Add: {
                             var value = new TValue();
                             var key = new TKey();
                             NetworkVariableSerialization<TKey>.Read(reader, ref key);
                             NetworkVariableSerialization<TValue>.Read(reader, ref value);
 
-                            if (m_Keys.Contains(key))
-                            {
+                            if (m_Keys.Contains(key)) {
                                 throw new Exception("Shouldn't be here, key already exists in dictionary");
                             }
 
                             m_Keys.Add(key);
                             m_Values.Add(value);
 
-                            OnDictionaryChanged?.Invoke(new NetworkDictionaryEvent<TKey, TValue>
-                            {
+                            OnDictionaryChanged?.Invoke(new NetworkDictionaryEvent<TKey, TValue> {
                                 Type = eventType,
                                 Key = key,
                                 Value = value
                             });
 
-                            if (keepDirtyDelta)
-                            {
-                                m_DirtyEvents.Add(new NetworkDictionaryEvent<TKey, TValue>()
-                                {
+                            if (keepDirtyDelta) {
+                                m_DirtyEvents.Add(new NetworkDictionaryEvent<TKey, TValue>() {
                                     Type = eventType,
                                     Key = key,
                                     Value = value
@@ -256,14 +221,12 @@ namespace Unity.Netcode
                             }
                         }
                         break;
-                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Remove:
-                        {
+                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Remove: {
                             var key = new TKey();
                             NetworkVariableSerialization<TKey>.Read(reader, ref key);
                             var index = m_Keys.IndexOf(key);
 
-                            if (index == -1)
-                            {
+                            if (index == -1) {
                                 break;
                             }
 
@@ -271,17 +234,14 @@ namespace Unity.Netcode
                             m_Keys.RemoveAt(index);
                             m_Values.RemoveAt(index);
 
-                            OnDictionaryChanged?.Invoke(new NetworkDictionaryEvent<TKey, TValue>
-                            {
+                            OnDictionaryChanged?.Invoke(new NetworkDictionaryEvent<TKey, TValue> {
                                 Type = eventType,
                                 Key = key,
                                 Value = value
                             });
 
-                            if (keepDirtyDelta)
-                            {
-                                m_DirtyEvents.Add(new NetworkDictionaryEvent<TKey, TValue>()
-                                {
+                            if (keepDirtyDelta) {
+                                m_DirtyEvents.Add(new NetworkDictionaryEvent<TKey, TValue>() {
                                     Type = eventType,
                                     Key = key,
                                     Value = value
@@ -289,34 +249,29 @@ namespace Unity.Netcode
                             }
                         }
                         break;
-                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Value:
-                        {
+                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Value: {
                             var value = new TValue();
                             var key = new TKey();
                             NetworkVariableSerialization<TKey>.Read(reader, ref key);
                             NetworkVariableSerialization<TValue>.Read(reader, ref value);
                             var index = m_Keys.IndexOf(key);
 
-                            if (index == -1)
-                            {
+                            if (index == -1) {
                                 throw new Exception("Shouldn't be here, key doesn't exist in dictionary");
                             }
 
                             var previousValue = m_Values.ElementAt(index);
                             m_Values[index] = value;
 
-                            OnDictionaryChanged?.Invoke(new NetworkDictionaryEvent<TKey, TValue>
-                            {
+                            OnDictionaryChanged?.Invoke(new NetworkDictionaryEvent<TKey, TValue> {
                                 Type = eventType,
                                 Key = key,
                                 Value = value,
                                 PreviousValue = previousValue
                             });
 
-                            if (keepDirtyDelta)
-                            {
-                                m_DirtyEvents.Add(new NetworkDictionaryEvent<TKey, TValue>()
-                                {
+                            if (keepDirtyDelta) {
+                                m_DirtyEvents.Add(new NetworkDictionaryEvent<TKey, TValue>() {
                                     Type = eventType,
                                     Key = key,
                                     Value = value,
@@ -325,20 +280,16 @@ namespace Unity.Netcode
                             }
                         }
                         break;
-                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Clear:
-                        {
+                    case NetworkDictionaryEvent<TKey, TValue>.EventType.Clear: {
                             m_Keys.Clear();
                             m_Values.Clear();
 
-                            OnDictionaryChanged?.Invoke(new NetworkDictionaryEvent<TKey, TValue>
-                            {
+                            OnDictionaryChanged?.Invoke(new NetworkDictionaryEvent<TKey, TValue> {
                                 Type = eventType
                             });
 
-                            if (keepDirtyDelta)
-                            {
-                                m_DirtyEvents.Add(new NetworkDictionaryEvent<TKey, TValue>
-                                {
+                            if (keepDirtyDelta) {
+                                m_DirtyEvents.Add(new NetworkDictionaryEvent<TKey, TValue> {
                                     Type = eventType
                                 });
                             }
@@ -352,18 +303,15 @@ namespace Unity.Netcode
         public IEnumerator<(TKey Key, TValue Value)> GetEnumerator() => new Enumerator(ref m_Keys, ref m_Values);
 
         /// <inheritdoc />
-        public void Add(TKey key, TValue value)
-        {
-            if (m_Keys.Contains(key))
-            {
+        public void Add(TKey key, TValue value) {
+            if (m_Keys.Contains(key)) {
                 throw new Exception("Shouldn't be here, key already exists in dictionary");
             }
 
             m_Keys.Add(key);
             m_Values.Add(value);
 
-            var dictionaryEvent = new NetworkDictionaryEvent<TKey, TValue>()
-            {
+            var dictionaryEvent = new NetworkDictionaryEvent<TKey, TValue>() {
                 Type = NetworkDictionaryEvent<TKey, TValue>.EventType.Add,
                 Key = key,
                 Value = value
@@ -373,13 +321,11 @@ namespace Unity.Netcode
         }
 
         /// <inheritdoc />
-        public void Clear()
-        {
+        public void Clear() {
             m_Keys.Clear();
             m_Values.Clear();
 
-            var dictionaryEvent = new NetworkDictionaryEvent<TKey, TValue>()
-            {
+            var dictionaryEvent = new NetworkDictionaryEvent<TKey, TValue>() {
                 Type = NetworkDictionaryEvent<TKey, TValue>.EventType.Clear
             };
 
@@ -390,12 +336,10 @@ namespace Unity.Netcode
         public bool ContainsKey(TKey key) => m_Keys.Contains(key);
 
         /// <inheritdoc />
-        public bool Remove(TKey key)
-        {
+        public bool Remove(TKey key) {
             var index = m_Keys.IndexOf(key);
 
-            if (index == -1)
-            {
+            if (index == -1) {
                 return false;
             }
 
@@ -403,8 +347,7 @@ namespace Unity.Netcode
             m_Keys.RemoveAt(index);
             m_Values.RemoveAt(index);
 
-            var dictionaryEvent = new NetworkDictionaryEvent<TKey, TValue>()
-            {
+            var dictionaryEvent = new NetworkDictionaryEvent<TKey, TValue>() {
                 Type = NetworkDictionaryEvent<TKey, TValue>.EventType.Remove,
                 Key = key,
                 Value = value
@@ -416,12 +359,10 @@ namespace Unity.Netcode
         }
 
         /// <inheritdoc />
-        public bool TryGetValue(TKey key, out TValue value)
-        {
+        public bool TryGetValue(TKey key, out TValue value) {
             var index = m_Keys.IndexOf(key);
 
-            if (index == -1)
-            {
+            if (index == -1) {
                 value = default;
                 return false;
             }
@@ -440,34 +381,29 @@ namespace Unity.Netcode
         public IEnumerable<TValue> Values => m_Values.ToArray(Allocator.Temp);
 
         /// <inheritdoc />
-        public TValue this[TKey key]
-        {
-            get
-            {
+        public TValue this[TKey key] {
+            get {
                 var index = m_Keys.IndexOf(key);
 
-                if (index == -1)
-                {
+                if (index == -1) {
                     throw new Exception("Shouldn't be here, key doesn't exist in dictionary");
                 }
 
                 return m_Values[index];
             }
-            set
-            {
+            set {
                 var index = m_Keys.IndexOf(key);
 
-                if (index == -1)
-                {
+                if (index == -1) {
                     Add(key, value);
                     return;
                 }
-
+                var previousValue = m_Values[index];
                 m_Values[index] = value;
 
-                var dictionaryEvent = new NetworkDictionaryEvent<TKey, TValue>()
-                {
+                var dictionaryEvent = new NetworkDictionaryEvent<TKey, TValue>() {
                     Type = NetworkDictionaryEvent<TKey, TValue>.EventType.Value,
+                    PreviousValue = previousValue,
                     Key = key,
                     Value = value
                 };
@@ -476,15 +412,13 @@ namespace Unity.Netcode
             }
         }
 
-        private void HandleAddDictionaryEvent(NetworkDictionaryEvent<TKey, TValue> dictionaryEvent)
-        {
+        private void HandleAddDictionaryEvent(NetworkDictionaryEvent<TKey, TValue> dictionaryEvent) {
             m_DirtyEvents.Add(dictionaryEvent);
             MarkNetworkObjectDirty();
             OnDictionaryChanged?.Invoke(dictionaryEvent);
         }
 
-        internal void MarkNetworkObjectDirty()
-        {
+        internal void MarkNetworkObjectDirty() {
             try {
                 MarkNetworkBehaviourDirty();
             }
@@ -493,8 +427,7 @@ namespace Unity.Netcode
             }
         }
 
-        public override void Dispose()
-        {
+        public override void Dispose() {
             m_Keys.Dispose();
             m_Values.Dispose();
             m_KeysAtLastReset.Dispose();
@@ -508,13 +441,11 @@ namespace Unity.Netcode
     /// </summary>
     /// <typeparam name="TKey">The type for the dictionary key that the event is about</typeparam>
     /// <typeparam name="TValue">The type for the dictionary value that the event is about</typeparam>
-    public struct NetworkDictionaryEvent<TKey, TValue>
-    {
+    public struct NetworkDictionaryEvent<TKey, TValue> {
         /// <summary>
         /// Enum representing the different operations available for triggering an event.
         /// </summary>
-        public enum EventType : byte
-        {
+        public enum EventType : byte {
             /// <summary>
             /// Add
             /// </summary>
