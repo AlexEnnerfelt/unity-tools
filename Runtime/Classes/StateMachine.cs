@@ -27,6 +27,9 @@ namespace UnpopularOpinion {
 		public T PreviousState { get; protected set; }
 
 		public event Action OnChange;
+		/// <summary>
+		/// First param is NewState, Second is PreviousState
+		/// </summary>
 		public event Action<T, T> OnStateChange;
 
 		public StateMachine(GameObject target = null, bool triggerEvents = true) {

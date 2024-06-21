@@ -44,7 +44,8 @@ public class Singleton<T> : MonoBehaviour where T : Component {
 				DontDestroyOnLoad(transform.gameObject);
 			}
 			_enabled = true;
-		} else {
+		}
+		else {
 			//If a Singleton already exists and you find
 			//another reference in scene, destroy it!
 			if (this != _instance) {

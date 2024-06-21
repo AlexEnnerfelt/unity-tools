@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public static class Extensions {
+public static partial class Extensions {
 	//Color Extensions
 	public static string GetHexcode(this Color c) {
 		var hex = "";
@@ -193,7 +193,7 @@ public static class Extensions {
 	}
 }
 
-public static class ListExtensions {
+public static partial class Extensions {
 	private static System.Random rand = new();
 
 	public static T TakeRandom<T>(this IEnumerable<T> enumerable) {
@@ -211,7 +211,7 @@ public static class ListExtensions {
 	}
 }
 
-public static class Vector2Extensions {
+public static partial class Extensions {
 	public static Vector2 GetPointWithinRadius(this Vector2 center, float radius) {
 		// Generate a random angle between 0 and 2*PI
 		float angle = UnityEngine.Random.Range(0f, 2f * Mathf.PI);
