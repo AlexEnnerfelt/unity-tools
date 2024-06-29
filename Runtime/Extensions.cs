@@ -154,7 +154,7 @@ public static class Extensions {
 		return obj.transform.TryGetComponentAround(out components, parentFirst);
 	}
 	public static bool TryGetComponentAround<T>(this Component obj, out T components, bool parentFirst = true) {
-		components = parentFirst ? obj.GetComponentInParent<T>() : obj.GetComponentInChildren<T>();
+		components = parentFirst ? obj.GetComponentInParent<T>(true) : obj.GetComponentInChildren<T>(true);
 		if (components == null) {
 			components = parentFirst ? obj.GetComponentInChildren<T>() : obj.GetComponentInParent<T>();
 		}
