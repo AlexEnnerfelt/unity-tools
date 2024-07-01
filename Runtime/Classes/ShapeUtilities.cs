@@ -40,4 +40,11 @@ namespace UnpopularOpinion.Tools {
 			return false;
 		}
 	}
+	public static class RandomUtility {
+		public static Vector2 Position2D(float xExtent, float yExtent) {
+			float x = Random.Range(-xExtent, xExtent); // Adjust the range as needed
+			float y = Random.Range(-yExtent, yExtent); // Adjust the range as needed
+			return new Vector2(x, y);
+		}
+	}
 }
