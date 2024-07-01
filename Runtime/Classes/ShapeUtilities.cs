@@ -10,6 +10,13 @@ namespace UnpopularOpinion.Tools {
 			var y = radius * Mathf.Sin(angle);
 			return new Vector2(x, y) + center;
 		}
+		public static Vector2 RandomPointOnEllipseEdge(float radius, Vector2 center) {
+			var angle = Random.Range(0f, 2f * Mathf.PI);
+			//var radius = Mathf.Sqrt(width * width + height * height) / 2f;
+			var x = radius * Mathf.Cos(angle);
+			var y = radius * Mathf.Sin(angle);
+			return new Vector2(x, y) + center;
+		}
 		public static Vector2 RandomPointInOval(float width, float height, Vector2 center) {
 			var angle = Random.Range(0f, 2f * Mathf.PI);
 			var radius = Mathf.Sqrt(Random.Range(0f, 1f)) * Mathf.Min(width, height) / 2f;
