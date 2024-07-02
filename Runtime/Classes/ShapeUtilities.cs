@@ -25,6 +25,22 @@ namespace UnpopularOpinion.Tools {
 			x *= width / height;
 			return new Vector2(x, y) + center;
 		}
+		public static Vector2 RandomPointInRectangle(float width, float height, Vector2 center) {
+			var angle = Random.Range(0f, 2f * Mathf.PI);
+			var radius = Mathf.Sqrt(Random.Range(0f, 1f)) * Mathf.Min(width, height) / 2f;
+			var x = radius * Mathf.Cos(angle);
+			var y = radius * Mathf.Sin(angle);
+			x *= width / height;
+			return new Vector2(x, y) + center;
+		}
+
+		public static Vector2 PositionWithinRectangle(float xExtent, float yExtent) {
+			float x = Random.Range(-xExtent / 2, xExtent / 2); // Adjust the range as needed
+			float y = Random.Range(-yExtent / 2, yExtent / 2); // Adjust the range as needed
+			return new Vector2(x, y);
+		}
+
+
 	}
 
 	public static class SceneUtilities {
@@ -48,10 +64,5 @@ namespace UnpopularOpinion.Tools {
 		}
 	}
 	public static class RandomUtility {
-		public static Vector2 Position2D(float xExtent, float yExtent) {
-			float x = Random.Range(-xExtent, xExtent); // Adjust the range as needed
-			float y = Random.Range(-yExtent, yExtent); // Adjust the range as needed
-			return new Vector2(x, y);
-		}
 	}
 }
