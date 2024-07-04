@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.AI;
 
 public static class Extensions {
 	//Color Extensions
@@ -232,5 +233,35 @@ public static class Vector2Extensions {
 		float y = center.y + randomRadius * Mathf.Sin(angle);
 
 		return new Vector2(x, y);
+	}
+}
+
+public static class NavMeshExtensions {
+	public static float navMeshArea;
+
+	public static float CalculateNavmeshArea() {
+		var navMesh = NavMesh.CalculateTriangulation();
+		var mesh = new Mesh();
+		mesh.vertices = navMesh.vertices;
+		mesh.triangles = navMesh.indices;
+		navMeshArea = mesh.CalculateSurfaceArea();
+		return navMeshArea;
+	}
+
+	public static float CalculateSurfaceArea(this Mesh mesh) {
+		var triangles = mesh.triangles;
+		var vertices = mesh.vertices;
+
+		double sum = 0.0;
+
+		for (int i = 0; i < triangles.Length; i += 3) {
+			Vector3 corner = vertices[triangles[i]];
+			Vector3 a = vertices[triangles[i + 1]] - corner;
+			Vector3 b = vertices[triangles[i + 2]] - corner;
+
+			sum += Vector3.Cross(a, b).magnitude;
+		}
+
+		return (float)(sum / 2.0);
 	}
 }
