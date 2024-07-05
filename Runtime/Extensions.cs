@@ -265,3 +265,11 @@ public static class NavMeshExtensions {
 		return (float)(sum / 2.0);
 	}
 }
+
+public static class LayerMaskExtensions {
+	public static LayerMask Inverse(this LayerMask mask) {
+		return new LayerMask() {
+			value = ~mask.value
+		};
+	}
+}
