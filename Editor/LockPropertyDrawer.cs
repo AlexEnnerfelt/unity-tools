@@ -5,6 +5,7 @@ using UnityEngine;
 public class ReadOnlyWhenToggledDrawer : PropertyDrawer {
 	private bool isLocked = true;
 
+	string currentInput;
 	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
 		var readOnlyWhenToggledAttribute = (LockAttribute)attribute;
 
@@ -19,13 +20,25 @@ public class ReadOnlyWhenToggledDrawer : PropertyDrawer {
 		isLocked = EditorGUI.Toggle(toggleRect, isLocked);
 
 		var fieldRect = new Rect(position.x + 35, position.y, position.width - 35, position.height);
+
+
 		if (isLocked) {
-			EditorGUI.LabelField(fieldRect, property.stringValue);
-		} else {
+			GUI.enabled = false; // Disable fields
+			if (currentInput != null) {
+				property.stringValue = currentInput;
+				currentInput = null;
+			}
+			EditorGUI.TextField(fieldRect, property.stringValue);
+			GUI.enabled = true; // Enable fields
+		}
+		else {
+			if (currentInput == null) {
+				currentInput = property.stringValue;
+			}
 			if (!string.IsNullOrEmpty(readOnlyWhenToggledAttribute.warningMessage)) {
 				EditorGUILayout.HelpBox(readOnlyWhenToggledAttribute.warningMessage, MessageType.Warning);
 			}
-			property.stringValue = EditorGUI.TextField(fieldRect, property.stringValue);
+			currentInput = EditorGUI.TextField(fieldRect, currentInput);
 		}
 
 		EditorGUI.indentLevel = indent;
