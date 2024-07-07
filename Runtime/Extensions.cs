@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 public static class Extensions {
 	//Color Extensions
@@ -195,7 +197,6 @@ public static class Extensions {
 }
 
 public static class ListExtensions {
-	private static System.Random rand = new();
 
 	public static T TakeRandom<T>(this IEnumerable<T> enumerable) {
 		if (!enumerable.Any()) {
@@ -204,7 +205,20 @@ public static class ListExtensions {
 
 		T item;
 		do {
-			item = enumerable.ElementAt(rand.Next(enumerable.Count()));
+			item = enumerable.ElementAt(RandomUtility.globalRandomizer.Next(enumerable.Count()));
+		}
+		while (item == null);
+
+		return item;
+	}
+	public static T TakeRandom<T>(this IEnumerable<T> enumerable, Random randomizer) {
+		if (!enumerable.Any()) {
+			throw new InvalidOperationException("Cannot select a random item from an empty set");
+		}
+
+		T item;
+		do {
+			item = enumerable.ElementAt(randomizer.Next(enumerable.Count()));
 		}
 		while (item == null);
 
@@ -272,4 +286,94 @@ public static class LayerMaskExtensions {
 			value = ~mask.value
 		};
 	}
+}
+
+public static class RandomUtility {
+	public static string globalSeed = "borkingBork";
+	public static Random globalRandomizer { get; private set; } = new();
+
+	/// <summary>
+	/// Initilizes the randomizer with the global seed and resets the number generator
+	/// </summary>
+	public static void Initialize() {
+		globalRandomizer = new(globalSeed.GetHashCode());
+	}
+
+	public static float Range(this Random rand, float min, float max) {
+		double val = (rand.NextDouble() * (max - min)) + min;
+		return (float)val;
+	}
+
+	public static float Range(float min, float max) {
+		double val = (globalRandomizer.NextDouble() * (max - min)) + min;
+		return (float)val;
+	}
+
+}
+
+public static class ShapeUtilities {
+	public static Vector2 RandomPointInEllipse(float width, float height, Vector2 center) {
+		var angle = RandomUtility.Range(0f, 2f * Mathf.PI);
+		var radius = Mathf.Sqrt(RandomUtility.Range(0f, 1f)) * Mathf.Min(width, height) / 2f;
+		var x = radius * Mathf.Cos(angle);
+		var y = radius * Mathf.Sin(angle);
+		return new Vector2(x, y) + center;
+	}
+	public static Vector2 RandomPointOnEllipseEdge(float radius, Vector2 center) {
+		var angle = RandomUtility.Range(0f, 2f * Mathf.PI);
+		//var radius = Mathf.Sqrt(width * width + height * height) / 2f;
+		var x = radius * Mathf.Cos(angle);
+		var y = radius * Mathf.Sin(angle);
+		return new Vector2(x, y) + center;
+	}
+	public static Vector2 RandomPointInOval(float width, float height, Vector2 center) {
+		var angle = RandomUtility.Range(0f, 2f * Mathf.PI);
+		var radius = Mathf.Sqrt(RandomUtility.Range(0f, 1f)) * Mathf.Min(width, height) / 2f;
+		var x = radius * Mathf.Cos(angle);
+		var y = radius * Mathf.Sin(angle);
+		x *= width / height;
+		return new Vector2(x, y) + center;
+	}
+	public static Vector2 RandomPointInRectangle(float width, float height, Vector2 center) {
+		var angle = RandomUtility.Range(0f, 2f * Mathf.PI);
+		var radius = Mathf.Sqrt(RandomUtility.Range(0f, 1f)) * Mathf.Min(width, height) / 2f;
+		var x = radius * Mathf.Cos(angle);
+		var y = radius * Mathf.Sin(angle);
+		x *= width / height;
+		return new Vector2(x, y) + center;
+	}
+
+	public static Vector2 PositionWithinRectangle(float xExtent, float yExtent) {
+		float x = RandomUtility.Range(-xExtent / 2, xExtent / 2); // Adjust the range as needed
+		float y = RandomUtility.Range(-yExtent / 2, yExtent / 2); // Adjust the range as needed
+		return new Vector2(x, y);
+	}
+
+
+}
+
+public static class SceneUtilities {
+	/// <summary>
+	/// Returns true if the scene 'name' exists and is in your Build settings, false otherwise
+	/// </summary>
+	public static bool DoesSceneExist(string name) {
+		if (string.IsNullOrEmpty(name))
+			return false;
+
+		for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++) {
+			var scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+			var lastSlash = scenePath.LastIndexOf("/");
+			var sceneName = scenePath.Substring(lastSlash + 1, scenePath.LastIndexOf(".") - lastSlash - 1);
+
+			if (string.Compare(name, sceneName, true) == 0)
+				return true;
+		}
+
+		return false;
+	}
+}
+
+
+public interface IRandomized {
+	public void SetSeed(int seed);
 }
