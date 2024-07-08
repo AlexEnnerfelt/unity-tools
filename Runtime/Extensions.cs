@@ -304,9 +304,15 @@ public static class RandomUtility {
 		return (float)val;
 	}
 
+	public static float Variance(this Random rand, float baseValue, float variance) {
+		var val1 = baseValue - variance;
+		var val2 = baseValue + variance;
+
+		return rand.Range(Mathf.Min(val1, val2), Mathf.Max(val1, val2));
+	}
+
 	public static float Range(float min, float max) {
-		double val = (globalRandomizer.NextDouble() * (max - min)) + min;
-		return (float)val;
+		return globalRandomizer.Range(min, max);
 	}
 
 }
