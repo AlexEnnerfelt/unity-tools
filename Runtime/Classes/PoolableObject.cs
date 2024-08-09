@@ -36,6 +36,11 @@ public class PoolableObject : ExtendedBehaviour {
     protected virtual void OnChangeActivation(bool activation) {
         gameObject.SetActive(activation);
         if (activation) {
+            onActivated.Invoke();
+        }
+        else {
+
+            onReturned.Invoke();
         }
     }
 }
