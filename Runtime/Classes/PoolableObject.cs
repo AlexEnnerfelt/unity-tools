@@ -5,6 +5,7 @@ using UnpopularOpinion.TopDown;
 public class PoolableObject : ExtendedBehaviour {
     private NetworkVariable<bool> netIsActivated;
     public bool IsActivated => netIsActivated.Value;
+    public bool disableOnDeactivate = true;
 
     public UnityEvent onActivated;
     public UnityEvent onReturned;
@@ -34,12 +35,16 @@ public class PoolableObject : ExtendedBehaviour {
         }
     }
     protected virtual void OnChangeActivation(bool activation) {
-        gameObject.SetActive(activation);
         if (activation) {
             onActivated.Invoke();
+            gameObject.SetActive(activation);
+
         }
         else {
 
+            if (disableOnDeactivate) {
+                gameObject.SetActive(activation);
+            }
             onReturned.Invoke();
         }
     }
