@@ -22,7 +22,7 @@ public static class Extensions {
         hex = Regex.Replace(hex, "-", "");
         return $"#{hex}";
 
-        byte floatToByte(float input) {
+        static byte floatToByte(float input) {
             var i = (byte)Mathf.RoundToInt(input * 255);
             return i;
         }
@@ -361,8 +361,6 @@ public static class ShapeUtilities {
         float y = RandomUtility.Range(-yExtent / 2, yExtent / 2); // Adjust the range as needed
         return new Vector2(x, y);
     }
-
-
 }
 
 public static class SceneUtilities {
