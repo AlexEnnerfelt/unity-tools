@@ -16,7 +16,19 @@ namespace UnpopularOpinion.Tools {
                 SpawnNewServerRpc();
             }
         }
-
+        public override void OnNetworkDespawn() {
+            base.OnNetworkDespawn();
+            if (IsServer) {
+                _pool.ForEach(poolable => {
+                    if (poolable.IsSpawned) {
+                        poolable.NetworkObject.Despawn();
+                    }
+                    else {
+                        Destroy(poolable.gameObject);
+                    }
+                });
+            }
+        }
         private PoolableObject InstantiateNewObject() {
             var obj = Instantiate(objectToPool);
 
@@ -43,8 +55,6 @@ namespace UnpopularOpinion.Tools {
             poolable.gameObject.SetActive(false);
             _pool.Add(poolable);
         }
-
-
 
         public async Awaitable<PoolableObject> GetPooledGameObject() {
             if (_pool.Any(obj => !obj.IsActivated)) {
