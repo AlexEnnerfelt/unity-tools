@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.Events;
 using UnpopularOpinion.TopDown;
 
@@ -22,12 +23,14 @@ public class PoolableObject : ExtendedBehaviour {
         base.OnNetworkSpawn();
         Return();
     }
+    [ContextMenu("Activate")]
     public virtual void Activate() {
         if (netIsActivated.CanClientWrite(LocalClientId)) {
             netIsActivated.Value = true;
             onActivated.Invoke();
         }
     }
+    [ContextMenu("Return")]
     public virtual void Return() {
         if (netIsActivated.CanClientWrite(LocalClientId)) {
             netIsActivated.Value = false;
