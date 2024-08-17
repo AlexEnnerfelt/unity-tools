@@ -226,7 +226,7 @@ public static class ListExtensions {
     }
 }
 
-public static class NavMeshExtensions {
+public static class NavMeshUtilities {
     public static float navMeshArea;
 
     public static float CalculateNavmeshArea() {
@@ -237,7 +237,11 @@ public static class NavMeshExtensions {
         navMeshArea = mesh.CalculateSurfaceArea();
         return navMeshArea;
     }
+    public static bool IsNavMeshBuilt() {
+        NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
 
+        return navMeshData.vertices.Length > 0;
+    }
     public static float CalculateSurfaceArea(this Mesh mesh) {
         var triangles = mesh.triangles;
         var vertices = mesh.vertices;
