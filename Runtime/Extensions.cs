@@ -226,30 +226,6 @@ public static class ListExtensions {
     }
 }
 
-public static class Vector2Extensions {
-    public static Vector2 GetPointWithinRadius(this Vector2 center, float radius) {
-        // Generate a random angle between 0 and 2*PI
-        float angle = UnityEngine.Random.Range(0f, 2f * Mathf.PI);
-
-        // Calculate the x and y position using the angle and radius
-        float x = center.x + radius * Mathf.Cos(angle);
-        float y = center.y + radius * Mathf.Sin(angle);
-
-        return new Vector2(x, y);
-    }
-    public static Vector2 GetPointWithinRadius(this Vector3 center, float radius) {
-        // Generate a random angle between 0 and 2*PI
-        float angle = UnityEngine.Random.Range(0f, 2f * Mathf.PI);
-        float randomRadius = UnityEngine.Random.Range(0f, radius);
-
-        // Calculate the x and y position using the angle and radius
-        float x = center.x + randomRadius * Mathf.Cos(angle);
-        float y = center.y + randomRadius * Mathf.Sin(angle);
-
-        return new Vector2(x, y);
-    }
-}
-
 public static class NavMeshExtensions {
     public static float navMeshArea;
 
@@ -303,6 +279,10 @@ public static class RandomUtility {
         double val = (rand.NextDouble() * (max - min)) + min;
         return (float)val;
     }
+    public static int Range(this Random rand, int min, int max) {
+        var val = rand.Next(Mathf.Min(min, max), Mathf.Max(min, max));
+        return val;
+    }
 
     public static float Variance(this Random rand, float baseValue, float variance) {
         var val1 = baseValue - variance;
@@ -317,50 +297,17 @@ public static class RandomUtility {
     public static float Range(float min, float max) {
         return globalRandomizer.Range(min, max);
     }
+
+
+
+    public static int Range(int min, int max) {
+        return globalRandomizer.Range(min, max);
+    }
     public static bool RollPercentage(float percentage) {
         var roll = globalRandomizer.Range(0f, 1f);
         return roll <= percentage;
     }
 
-}
-
-public static class ShapeUtilities {
-    public static Vector2 RandomPointInEllipse(float width, float height, Vector2 center) {
-        var angle = RandomUtility.Range(0f, 2f * Mathf.PI);
-        var radius = Mathf.Sqrt(RandomUtility.Range(0f, 1f)) * Mathf.Min(width, height) / 2f;
-        var x = radius * Mathf.Cos(angle);
-        var y = radius * Mathf.Sin(angle);
-        return new Vector2(x, y) + center;
-    }
-    public static Vector2 RandomPointOnEllipseEdge(float radius, Vector2 center) {
-        var angle = RandomUtility.Range(0f, 2f * Mathf.PI);
-        //var radius = Mathf.Sqrt(width * width + height * height) / 2f;
-        var x = radius * Mathf.Cos(angle);
-        var y = radius * Mathf.Sin(angle);
-        return new Vector2(x, y) + center;
-    }
-    public static Vector2 RandomPointInOval(float width, float height, Vector2 center) {
-        var angle = RandomUtility.Range(0f, 2f * Mathf.PI);
-        var radius = Mathf.Sqrt(RandomUtility.Range(0f, 1f)) * Mathf.Min(width, height) / 2f;
-        var x = radius * Mathf.Cos(angle);
-        var y = radius * Mathf.Sin(angle);
-        x *= width / height;
-        return new Vector2(x, y) + center;
-    }
-    public static Vector2 RandomPointInRectangle(float width, float height, Vector2 center) {
-        var angle = RandomUtility.Range(0f, 2f * Mathf.PI);
-        var radius = Mathf.Sqrt(RandomUtility.Range(0f, 1f)) * Mathf.Min(width, height) / 2f;
-        var x = radius * Mathf.Cos(angle);
-        var y = radius * Mathf.Sin(angle);
-        x *= width / height;
-        return new Vector2(x, y) + center;
-    }
-
-    public static Vector2 PositionWithinRectangle(float xExtent, float yExtent) {
-        float x = RandomUtility.Range(-xExtent / 2, xExtent / 2); // Adjust the range as needed
-        float y = RandomUtility.Range(-yExtent / 2, yExtent / 2); // Adjust the range as needed
-        return new Vector2(x, y);
-    }
 }
 
 public static class SceneUtilities {
@@ -383,7 +330,6 @@ public static class SceneUtilities {
         return false;
     }
 }
-
 
 public interface IRandomized {
     public void SetSeed(int seed);
