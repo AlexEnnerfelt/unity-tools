@@ -12,8 +12,15 @@ namespace UnpopularOpinion.Tools {
         protected List<PoolableObject> _pool = new();
 
         public void InitializePool() {
-            for (int i = 0; i < InitialPoolSize; i++) {
-                SpawnNewServerRpc();
+            if (IsSpawned) {
+                for (int i = 0; i < InitialPoolSize; i++) {
+                    SpawnNewServerRpc();
+                }
+            } else {
+                for (int i = 0; i < InitialPoolSize; i++) {
+                    var obj = InstantiateNewObject();
+                    AddObjectToPool(obj);
+                }
             }
         }
         public override void OnNetworkDespawn() {
@@ -22,8 +29,7 @@ namespace UnpopularOpinion.Tools {
                 _pool.ForEach(poolable => {
                     if (poolable.IsSpawned) {
                         poolable.NetworkObject.Despawn();
-                    }
-                    else {
+                    } else {
                         Destroy(poolable.gameObject);
                     }
                 });
@@ -31,10 +37,13 @@ namespace UnpopularOpinion.Tools {
         }
         private PoolableObject InstantiateNewObject() {
             var obj = Instantiate(objectToPool);
-
-            obj.NetworkObject.SpawnWithOwnership(OwnerClientId);
-            obj.NetworkObject.TrySetParent(transform);
-
+            //Network spawn only if it has a network object
+            if (obj.NetworkObject != null) {
+                obj.NetworkObject.SpawnWithOwnership(OwnerClientId);
+                obj.NetworkObject.TrySetParent(transform);
+            } else {
+                obj.transform.parent = transform;
+            }
             return obj;
         }
 
@@ -56,12 +65,26 @@ namespace UnpopularOpinion.Tools {
             _pool.Add(poolable);
         }
 
-        public async Awaitable<PoolableObject> GetPooledGameObject() {
+        /// <summary>
+        /// Use only for local pools
+        /// </summary>
+        /// <returns></returns>
+        public PoolableObject GetPooledObject() {
             if (_pool.Any(obj => !obj.IsActivated)) {
                 var readyObject = _pool.First(obj => !obj.IsActivated);
                 return readyObject;
+            } else {
+                var obj = InstantiateNewObject();
+                AddObjectToPool(obj);
+                return obj;
             }
-            else {
+        }
+
+        public async Awaitable<PoolableObject> GetPooledGameObjectAsync() {
+            if (_pool.Any(obj => !obj.IsActivated)) {
+                var readyObject = _pool.First(obj => !obj.IsActivated);
+                return readyObject;
+            } else {
                 SpawnNewServerRpc();
                 while (!_pool.Any(obj => !obj.IsActivated)) {
                     await Awaitable.NextFrameAsync();
