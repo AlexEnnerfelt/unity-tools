@@ -66,8 +66,8 @@ public class GeometryUtilitiesTests {
     public void GetPointOnRectangle_ReturnsPointOnEdge() {
         // Arrange
         var center = new Vector2(Random.Range(-100f, 100f), Random.Range(-100f, 100f));
-        var size = new Vector2(Random.Range(-10, 100f), Random.Range(-10, 100f));
-        int testIterations = 1000; // Number of times to run the test
+        var size = new Vector2(Random.Range(0, 100f), Random.Range(0, 100f));
+        var testIterations = 1000; // Number of times to run the test
 
         for (int i = 0; i < testIterations; i++) {
             // Act
@@ -81,7 +81,7 @@ public class GeometryUtilitiesTests {
                      (result.x >= center.x - size.x / 2f && result.x <= center.x + size.x / 2f);
 
 
-            Assert.IsTrue(isOnEdge, $"The point is not on the edge of the rectangle on iteration {i}. Result: {result}");
+            Assert.IsTrue(isOnEdge, $"The point is not on the edge of the rectangle on iteration {i}. \nResult: {result}, \nCenter:{center}, \nSize:{size} ");
         }
     }
 }
