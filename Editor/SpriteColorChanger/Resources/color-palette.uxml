@@ -1,0 +1,17 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Scripts/Editor/SpriteColorChanger/Resources/color-palette.uss?fileID=7433441132597879392&amp;guid=c1a93875e80094f4c81fdaacc92aad28&amp;type=3#color-palette" />
+    <engine:Foldout text="Foldout">
+        <engine:VisualElement name="palette-options" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; margin-right: 23px;">
+            <engine:RadioButton />
+            <engine:RadioButton />
+            <engine:RadioButton />
+            <engine:RadioButton />
+            <engine:RadioButton />
+            <engine:RadioButton />
+            <engine:RadioButton />
+            <engine:RadioButton />
+            <engine:RadioButton />
+            <engine:Button />
+        </engine:VisualElement>
+    </engine:Foldout>
+</engine:UXML>

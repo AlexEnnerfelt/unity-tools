@@ -1,0 +1,35 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <engine:Template name="color-palette" src="project://database/Assets/Plugins/Unpopular-Tools/Editor/SpriteColorChanger/Resources/color-palette.uxml?fileID=9197481963319205126&amp;guid=a5f8581eedcbd0145ae1e73c52274a2e&amp;type=3#color-palette" />
+    <Style src="project://database/Assets/Plugins/Unpopular-Tools/Editor/SpriteColorChanger/Resources/sprite-color-changer-window.uss?fileID=7433441132597879392&amp;guid=473ff220473d15d4f8ae85662ebb8d35&amp;type=3#sprite-color-changer-window" />
+    <engine:VisualElement style="flex-grow: 1; justify-content: space-between;">
+        <engine:VisualElement style="flex-grow: 1;">
+            <editor:Toolbar style="justify-content: space-between;">
+                <editor:ToolbarMenu name="palette-menu" text="Palettes" style="justify-content: space-between;" />
+                <editor:ToolbarToggle label="Debug" name="debug-toggle" style="width: 62px;" />
+            </editor:Toolbar>
+            <engine:Label text="Color Palettes" style="font-size: 18px; -unity-font-style: bold; margin-top: 3px; margin-right: 3px; margin-bottom: 3px; margin-left: 3px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px;" />
+            <engine:VisualElement name="palettes" style="flex-grow: 0; margin-top: 5px; margin-bottom: 5px;">
+                <engine:Instance template="color-palette" />
+                <engine:Instance template="color-palette" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="palette-inspector" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0.18); margin-top: 5px; margin-left: 5px; margin-right: 5px; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; padding-right: 5px; align-self: stretch; margin-bottom: 10px;">
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; margin-bottom: 7px;">
+                <engine:Label text="Settings" name="selected-color-inspector-label" style="font-size: 15px; -unity-font-style: bold; margin-bottom: 3px;" />
+                <engine:VisualElement style="flex-grow: 0; flex-direction: row;">
+                    <engine:RadioButtonGroup choices="paint,edit" value="2" name="tool-mode" class="tool-mode" style="flex-direction: row;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:VisualElement style="flex-grow: 1; flex-direction: row;">
+                <editor:ColorField show-eye-dropper="true" name="ColorField" style="flex-grow: 1;" />
+                <engine:Button text="Delete" name="delete-button" style="background-color: rgb(128, 81, 81); color: rgb(72, 36, 36); -unity-font-style: bold; margin-left: 16px;" />
+            </engine:VisualElement>
+            <engine:VisualElement style="flex-grow: 1; margin-top: 5px; margin-bottom: 5px;">
+                <engine:Label text="Color variance" />
+                <engine:Slider label="&lt;color=red&gt;Red" value="-0.03" high-value="0.1" show-input-field="true" name="R-Slider" />
+                <engine:Slider label="&lt;color=green&gt;Green" value="0" high-value="0.1" show-input-field="true" name="G-Slider" />
+                <engine:Slider label="&lt;color=blue&gt;Blue" value="0" high-value="0.1" show-input-field="true" direction="Horizontal" name="B-Slider" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
