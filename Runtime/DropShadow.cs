@@ -16,9 +16,21 @@ public class DropShadow : MonoBehaviour {
     void Start() {
 
     }
-    public void OnDestroy() {
+    public void OnEnable() {
         if (_shadowGameObject != null) {
-            Destroy(_shadowGameObject);
+            _shadowGameObject.SetActive(true);
+        }
+    }
+    public void OnDisable() {
+        if (_shadowGameObject != null) {
+            _shadowGameObject.SetActive(false);
+        }
+    }
+    public void OnDestroy() {
+        if (Application.isPlaying) {
+            if (_shadowGameObject != null) {
+                Destroy(_shadowGameObject);
+            }
         }
     }
     public void OnValidate() {
