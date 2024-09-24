@@ -8,6 +8,7 @@ namespace UnpopularOpinion.UICore {
         public VisualElement Root { get; protected set; }
         protected UIDocument _document;
         protected static UIDisplay fade;
+        public string RootElementName;
 
         [field: SerializeField, ReadOnlyField]
         public bool IsOpen { get; protected set; } = true;
@@ -18,7 +19,12 @@ namespace UnpopularOpinion.UICore {
             if (TryGetComponent(out _document)) {
                 _document.enabled = true;
                 //SetUp(_document.rootVisualElement);
-                SetUp(_document.rootVisualElement);
+                if (string.IsNullOrEmpty(RootElementName)) {
+                    SetUp(_document.rootVisualElement);
+                } else {
+                    SetUp(_document.rootVisualElement.Q<VisualElement>(RootElementName));
+
+                }
             } else {
                 Debug.LogError($"Missing UIDocument for {name}", this);
             }
