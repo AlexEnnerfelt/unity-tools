@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using DG.Tweening;
 using UnityEngine;
@@ -17,6 +18,9 @@ public class LerpToTarget : MonoBehaviour {
         }
     }
 
+    public void OnEnable() {
+        moveTarget.localScale = Vector3.one;
+    }
     public void OnDisable() {
         ct.Cancel();
     }
@@ -30,17 +34,16 @@ public class LerpToTarget : MonoBehaviour {
     private async void Lerp() {
         ct.Cancel();
         ct = new();
-        moveTarget.DOPunchScale(new(punchScale, punchScale), punchDuration);
+        var tweener = moveTarget.DOPunchScale(new(punchScale, punchScale), punchDuration);
 
         while (true) {
             moveTarget.position = Vector2.Lerp(moveTarget.position, lerpTarget.position, lerpSpeed * Time.deltaTime);
             try {
                 await Awaitable.NextFrameAsync(ct.Token);
-            }
-            catch (System.Exception) {
-
+            } catch (OperationCanceledException) {
                 break;
             }
         }
+        tweener.Kill();
     }
 }
