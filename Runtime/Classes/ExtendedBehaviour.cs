@@ -17,8 +17,13 @@ namespace UnpopularOpinion.TopDown {
 
 #endif
         public ulong LocalClientId => NetworkManager.LocalClientId;
-        public bool IsNetcodeActive => NetworkManager != null && NetworkManager.IsListening && NetworkObject.IsSpawned
-            ;
+        public bool IsNetcodeActive {
+            get {
+
+                return NetworkObject != null && NetworkManager != null && NetworkManager.IsListening && NetworkObject.IsSpawned;
+            }
+        }
+
         public const string iconPath = "Assets/Plugins/Unpopular-Topdown/Editor/";
         public const string addComponent = "Unpopular Topdown/";
 
