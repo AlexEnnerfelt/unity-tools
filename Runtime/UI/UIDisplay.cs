@@ -51,6 +51,9 @@ namespace UnpopularOpinion.UICore {
             Root.visible = IsOpen;
         }
         public static void RegisterForGlobalEventsRecursive(VisualElement visualElement) {
+            if (visualElement == null) {
+                return;
+            }
             RegisterForGlobalEvents(visualElement);
             var children = visualElement.Children().ToList();
             children.ForEach(child => RegisterForGlobalEventsRecursive(child));
