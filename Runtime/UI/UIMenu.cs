@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,7 +9,16 @@ namespace UnpopularOpinion.UICore {
 
 
         private static List<UIMenu> _menus = new();
-        public static bool IsMenuUpen => _menus.Any(menu => menu.IsOpen);
+        public static bool IsMenuUpen {
+            get {
+                foreach (var item in _menus) {
+                    if (item.IsOpen) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
         public bool isFocused;
         public virtual VisualElement FocusOnOpen {
             get => Root;

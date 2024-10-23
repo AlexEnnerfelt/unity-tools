@@ -121,4 +121,33 @@ namespace UnpopularOpinion.UICore {
         public void Show();
         public void Hide();
     }
+
+    public static class NavigationUtils {
+        public static void SetNavigation(Focusable origin, Focusable left = null, Focusable right = null, Focusable up = null, Focusable down = null) {
+            origin.RegisterCallback<NavigationMoveEvent>(evt => {
+                switch (evt.direction) {
+                    case NavigationMoveEvent.Direction.None:
+                        break;
+                    case NavigationMoveEvent.Direction.Left:
+                        left?.Focus();
+                        break;
+                    case NavigationMoveEvent.Direction.Up:
+                        up?.Focus();
+                        break;
+                    case NavigationMoveEvent.Direction.Right:
+                        right?.Focus();
+                        break;
+                    case NavigationMoveEvent.Direction.Down:
+                        down?.Focus();
+                        break;
+                    case NavigationMoveEvent.Direction.Next:
+                        break;
+                    case NavigationMoveEvent.Direction.Previous:
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+    }
 }
