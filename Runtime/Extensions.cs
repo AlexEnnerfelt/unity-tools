@@ -194,6 +194,14 @@ public static class Extensions {
         var linear = Mathf.Pow(10f, decibel / 20f);
         return linear;
     }
+    
+    public static bool HasParameter(this Animator self, string name, AnimatorControllerParameterType type)
+    {
+        if (string.IsNullOrEmpty(name)) { return false; }
+
+        return self.parameters.Any(currParam => currParam.type == type && currParam.name == name);
+    }
+
 }
 
 public static class ListExtensions {
