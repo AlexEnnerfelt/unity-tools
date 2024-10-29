@@ -6,9 +6,11 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 using Random = System.Random;
 
-public static class Extensions {
+public static class Extensions
+{
     //Color Extensions
     public static string GetHexcode(this Color c) {
         var hex = "";
@@ -27,6 +29,7 @@ public static class Extensions {
             return i;
         }
     }
+
     public static string GetHexcode(this Color32 c) {
         var hex = "";
         byte[] bytes = {
@@ -39,21 +42,26 @@ public static class Extensions {
         hex = Regex.Replace(hex, "-", "");
         return $"#{hex}";
     }
+
     public static Color32 FadeAlpha(this Color32 color, float normalizedAlpha) {
         var newAlpha = (byte)(normalizedAlpha * 255);
         return new Color32(color.r, color.g, color.b, newAlpha);
     }
+
     public static Color FadeAlpha(this Color color, float normalizedAlpha) {
         return new Color(color.r, color.g, color.b, normalizedAlpha);
     }
+
     public static Transform[] GetChildren(this Transform transform) {
         var count = transform.childCount;
         var children = new Transform[count];
         for (var i = 0; i < count; i++) {
             children[i] = transform.GetChild(i);
         }
+
         return children;
     }
+
     public static Transform[] GetAllChildren(this Transform parent) {
         var allChildren = new List<Transform>();
         GetChildRecursive(parent, allChildren);
@@ -81,6 +89,7 @@ public static class Extensions {
             prop.SetValue(dest, prop.GetValue(source, null), null);
         }
     }
+
     public static void CopyPublicProperties<T>(this T source, T destination) {
         var propertyInfos = typeof(T).GetProperties(
             BindingFlags.Public |
@@ -93,6 +102,7 @@ public static class Extensions {
             }
         }
     }
+
     public static void CopyPublicFields<T>(this T source, T destination) {
         var fieldInfos = typeof(T).GetFields(
             BindingFlags.Public |
@@ -108,6 +118,7 @@ public static class Extensions {
     public static bool TryGetComponentInParent<T>(this GameObject obj, out T component) {
         return obj.transform.TryGetComponentInParent(out component);
     }
+
     public static bool TryGetComponentInParent<T>(this Component obj, out T component) {
         if (obj.TryGetComponent(out component)) {
             return true;
@@ -115,11 +126,14 @@ public static class Extensions {
         else {
             component = obj.GetComponentInParent<T>();
         }
+
         return component != null;
     }
+
     public static bool TryGetComponentsInParent<T>(this GameObject obj, out T component) {
         return obj.TryGetComponentsInParent(out component);
     }
+
     public static bool TryGetComponentsInParent<T>(this Component obj, out T component) {
         if (obj.TryGetComponent(out component)) {
             return true;
@@ -127,11 +141,14 @@ public static class Extensions {
         else {
             component = obj.GetComponentInParent<T>();
         }
+
         return component != null;
     }
+
     public static bool TryGetComponentInChildren<T>(this GameObject obj, out T component) {
         return obj.transform.TryGetComponentInChildren(out component);
     }
+
     public static bool TryGetComponentInChildren<T>(this Component obj, out T component) {
         if (obj.TryGetComponent(out component)) {
             return true;
@@ -139,11 +156,14 @@ public static class Extensions {
         else {
             component = obj.GetComponentInChildren<T>();
         }
+
         return component != null;
     }
+
     public static bool TryGetComponentsInChildren<T>(this GameObject obj, out T[] components) {
         return obj.transform.TryGetComponentsInChildren(out components);
     }
+
     public static bool TryGetComponentsInChildren<T>(this Component obj, out T[] components) {
         components = obj.GetComponentsInChildren<T>();
         if (components == null || components.Length < 1) {
@@ -153,14 +173,17 @@ public static class Extensions {
             return true;
         }
     }
+
     public static bool TryGetComponentAround<T>(this GameObject obj, out T components, bool parentFirst = true) {
         return obj.transform.TryGetComponentAround(out components, parentFirst);
     }
+
     public static bool TryGetComponentAround<T>(this Component obj, out T components, bool parentFirst = true) {
         components = parentFirst ? obj.GetComponentInParent<T>(true) : obj.GetComponentInChildren<T>(true);
         if (components == null) {
             components = parentFirst ? obj.GetComponentInChildren<T>() : obj.GetComponentInParent<T>();
         }
+
         return components != null;
     }
 
@@ -175,15 +198,18 @@ public static class Extensions {
             Debug.LogError("This vector is not normalized and will return zero");
             return Vector3.zero;
         }
+
         var angle = Mathf.Atan2(normalizedVector.y, normalizedVector.x) * Mathf.Rad2Deg;
         var eulerAngle = new Vector3(0, 0, angle);
         return eulerAngle;
     }
+
     public static Vector3 NormalizedToEuler(this Vector2 normalizedVector) {
         if (normalizedVector.x > 1 || normalizedVector.x < -1 || normalizedVector.y > 1 || normalizedVector.y < -1) {
             Debug.LogError("This vector is not normalized and will return zero");
             return Vector2.zero;
         }
+
         var angle = Mathf.Atan2(normalizedVector.y, normalizedVector.x) * Mathf.Rad2Deg;
         var eulerAngle = new Vector3(0, 0, angle);
         return eulerAngle;
@@ -194,18 +220,47 @@ public static class Extensions {
         var linear = Mathf.Pow(10f, decibel / 20f);
         return linear;
     }
-    
-    public static bool HasParameter(this Animator self, string name, AnimatorControllerParameterType type)
-    {
-        if (string.IsNullOrEmpty(name)) { return false; }
+
+    public static bool HasParameter(this Animator self, string name, AnimatorControllerParameterType type) {
+        if (string.IsNullOrEmpty(name)) {
+            return false;
+        }
 
         return self.parameters.Any(currParam => currParam.type == type && currParam.name == name);
     }
 
+    public static void FitSlicedSpriteIntoElement(this VisualElement element, Sprite sprite) {
+        var spriteBorder = sprite.border;
+        var rectSize = sprite.textureRect;
+
+        var size = new Vector2(rectSize.size.x - (spriteBorder.x + spriteBorder.z), rectSize.size.y - (spriteBorder.w + spriteBorder.y));
+        var max = Mathf.Max(size.x, size.y);
+        var sizePercentage = new Vector2((size.x / max) * 100f, (size.y / max) * 100f);
+
+        element.style.width = new() {
+            value = new() {
+                value = sizePercentage.x,
+                unit = LengthUnit.Percent
+            }
+        };
+        element.style.height = new() {
+            value = new() {
+                value = sizePercentage.y,
+                unit = LengthUnit.Percent
+            }
+        };
+        element.style.unitySliceScale = 0f;
+        element.style.unitySliceBottom = 0;
+        element.style.unitySliceTop = 0;
+        element.style.unitySliceLeft = 0;
+        element.style.unitySliceRight = 0;
+
+        element.style.backgroundImage = new StyleBackground(sprite);
+    }
 }
 
-public static class ListExtensions {
-
+public static class ListExtensions
+{
     public static T TakeRandom<T>(this IEnumerable<T> enumerable) {
         if (!enumerable.Any()) {
             throw new InvalidOperationException("Cannot select a random item from an empty set");
@@ -214,11 +269,11 @@ public static class ListExtensions {
         T item;
         do {
             item = enumerable.ElementAt(RandomUtility.globalRandomizer.Next(enumerable.Count()));
-        }
-        while (item == null);
+        } while (item == null);
 
         return item;
     }
+
     public static T TakeRandom<T>(this IEnumerable<T> enumerable, Random randomizer) {
         if (!enumerable.Any()) {
             throw new InvalidOperationException("Cannot select a random item from an empty set");
@@ -227,14 +282,14 @@ public static class ListExtensions {
         T item;
         do {
             item = enumerable.ElementAt(randomizer.Next(enumerable.Count()));
-        }
-        while (item == null);
+        } while (item == null);
 
         return item;
     }
 }
 
-public static class NavMeshUtilities {
+public static class NavMeshUtilities
+{
     public static float navMeshArea;
 
     public static float CalculateNavmeshArea() {
@@ -245,11 +300,13 @@ public static class NavMeshUtilities {
         navMeshArea = mesh.CalculateSurfaceArea();
         return navMeshArea;
     }
+
     public static bool IsNavMeshBuilt() {
         NavMeshTriangulation navMeshData = NavMesh.CalculateTriangulation();
 
         return navMeshData.vertices.Length > 0;
     }
+
     public static float CalculateSurfaceArea(this Mesh mesh) {
         var triangles = mesh.triangles;
         var vertices = mesh.vertices;
@@ -268,7 +325,8 @@ public static class NavMeshUtilities {
     }
 }
 
-public static class LayerMaskExtensions {
+public static class LayerMaskExtensions
+{
     public static LayerMask Inverse(this LayerMask mask) {
         return new LayerMask() {
             value = ~mask.value
@@ -276,7 +334,8 @@ public static class LayerMaskExtensions {
     }
 }
 
-public static class RandomUtility {
+public static class RandomUtility
+{
     public static string globalSeed = "borkingBork";
     public static Random globalRandomizer { get; private set; } = new();
 
@@ -291,6 +350,7 @@ public static class RandomUtility {
         double val = (rand.NextDouble() * (max - min)) + min;
         return (float)val;
     }
+
     public static int Range(this Random rand, int min, int max) {
         var val = rand.Next(Mathf.Min(min, max), Mathf.Max(min, max));
         return val;
@@ -302,6 +362,7 @@ public static class RandomUtility {
 
         return rand.Range(Mathf.Min(val1, val2), Mathf.Max(val1, val2));
     }
+
     public static float Variance(float baseValue, float variance) {
         return globalRandomizer.Variance(baseValue, variance);
     }
@@ -310,19 +371,18 @@ public static class RandomUtility {
         return globalRandomizer.Range(min, max);
     }
 
-
-
     public static int Range(int min, int max) {
         return globalRandomizer.Range(min, max);
     }
+
     public static bool RollPercentage(float percentage) {
         var roll = globalRandomizer.Range(0f, 1f);
         return roll <= percentage;
     }
-
 }
 
-public static class SceneUtilities {
+public static class SceneUtilities
+{
     /// <summary>
     /// Returns true if the scene 'name' exists and is in your Build settings, false otherwise
     /// </summary>
@@ -343,6 +403,7 @@ public static class SceneUtilities {
     }
 }
 
-public interface IRandomized {
+public interface IRandomized
+{
     public void SetSeed(int seed);
 }
