@@ -1,15 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnpopularOpinion.Tools {
+namespace UnpopularOpinion.Tools
+{
+
     /// <summary>
     /// Color helpers
     /// </summary>
-    public static class Colors {
+    public static class Colors
+    {
         // via https://gist.github.com/LotteMakesStuff/f7ce43f11e545a151b95b5e87f76304c
         // NOTE: The follwing color names come from the CSS3 specification, Section 4.3 Extended Color Keywords
         // http://www.w3.org/TR/css3-color/#svg-color
 
+        #region COLOR DEFINITIONS
         public static readonly Color ReunoYellow = new Color32(255, 196, 0, 255);
         public static readonly Color BestRed = new Color32(255, 24, 0, 255);
         public static readonly Color AliceBlue = new Color32(240, 248, 255, 255);
@@ -152,8 +156,155 @@ namespace UnpopularOpinion.Tools {
         public static readonly Color WhiteSmoke = new Color32(245, 245, 245, 255);
         public static readonly Color Yellow = new Color32(255, 255, 0, 255);
         public static readonly Color YellowGreen = new Color32(154, 205, 50, 255);
+        #endregion
+
+        #region COLOR NAMES
+        public const string aliceBlue = "AliceBlue";
+        public const string antiqueWhite = "AntiqueWhite";
+        public const string aqua = "Aqua";
+        public const string aquamarine = "Aquamarine";
+        public const string azure = "Azure";
+        public const string beige = "Beige";
+        public const string bisque = "Bisque";
+        public const string black = "Black";
+        public const string blanchedAlmond = "BlanchedAlmond";
+        public const string blue = "Blue";
+        public const string blueViolet = "BlueViolet";
+        public const string brown = "Brown";
+        public const string burlywood = "Burlywood";
+        public const string cadetBlue = "CadetBlue";
+        public const string chartreuse = "Chartreuse";
+        public const string chocolate = "Chocolate";
+        public const string coral = "Coral";
+        public const string cornflowerBlue = "CornflowerBlue";
+        public const string cornsilk = "Cornsilk";
+        public const string crimson = "Crimson";
+        public const string cyan = "Cyan";
+        public const string darkBlue = "DarkBlue";
+        public const string darkCyan = "DarkCyan";
+        public const string darkGoldenrod = "DarkGoldenrod";
+        public const string darkGray = "DarkGray";
+        public const string darkGreen = "DarkGreen";
+        public const string darkKhaki = "DarkKhaki";
+        public const string darkMagenta = "DarkMagenta";
+        public const string darkOliveGreen = "DarkOliveGreen";
+        public const string darkOrange = "DarkOrange";
+        public const string darkOrchid = "DarkOrchid";
+        public const string darkRed = "DarkRed";
+        public const string darkSalmon = "DarkSalmon";
+        public const string darkSeaGreen = "DarkSeaGreen";
+        public const string darkSlateBlue = "DarkSlateBlue";
+        public const string darkSlateGray = "DarkSlateGray";
+        public const string darkTurquoise = "DarkTurquoise";
+        public const string darkViolet = "DarkViolet";
+        public const string deepPink = "DeepPink";
+        public const string deepSkyBlue = "DeepSkyBlue";
+        public const string dimGray = "DimGray";
+        public const string dodgerBlue = "DodgerBlue";
+        public const string fireBrick = "FireBrick";
+        public const string floralWhite = "FloralWhite";
+        public const string forestGreen = "ForestGreen";
+        public const string fuchsia = "Fuchsia";
+        public const string gainsboro = "Gainsboro";
+        public const string ghostWhite = "GhostWhite";
+        public const string gold = "Gold";
+        public const string goldenrod = "Goldenrod";
+        public const string gray = "Gray";
+        public const string green = "Green";
+        public const string greenYellow = "GreenYellow";
+        public const string honeydew = "Honeydew";
+        public const string hotPink = "HotPink";
+        public const string indianRed = "IndianRed";
+        public const string indigo = "Indigo";
+        public const string ivory = "Ivory";
+        public const string khaki = "Khaki";
+        public const string lavender = "Lavender";
+        public const string lavenderblush = "Lavenderblush";
+        public const string lawnGreen = "LawnGreen";
+        public const string lemonChiffon = "LemonChiffon";
+        public const string lightBlue = "LightBlue";
+        public const string lightCoral = "LightCoral";
+        public const string lightCyan = "LightCyan";
+        public const string lightGoldenodYellow = "LightGoldenodYellow";
+        public const string lightGray = "LightGray";
+        public const string lightGreen = "LightGreen";
+        public const string lightPink = "LightPink";
+        public const string lightSalmon = "LightSalmon";
+        public const string lightSeaGreen = "LightSeaGreen";
+        public const string lightSkyBlue = "LightSkyBlue";
+        public const string lightSlateGray = "LightSlateGray";
+        public const string lightSteelBlue = "LightSteelBlue";
+        public const string lightYellow = "LightYellow";
+        public const string lime = "Lime";
+        public const string limeGreen = "LimeGreen";
+        public const string linen = "Linen";
+        public const string magenta = "Magenta";
+        public const string maroon = "Maroon";
+        public const string mediumAquamarine = "MediumAquamarine";
+        public const string mediumBlue = "MediumBlue";
+        public const string mediumOrchid = "MediumOrchid";
+        public const string mediumPurple = "MediumPurple";
+        public const string mediumSeaGreen = "MediumSeaGreen";
+        public const string mediumSlateBlue = "MediumSlateBlue";
+        public const string mediumSpringGreen = "MediumSpringGreen";
+        public const string mediumTurquoise = "MediumTurquoise";
+        public const string mediumVioletRed = "MediumVioletRed";
+        public const string midnightBlue = "MidnightBlue";
+        public const string mintcream = "Mintcream";
+        public const string mistyRose = "MistyRose";
+        public const string moccasin = "Moccasin";
+        public const string navajoWhite = "NavajoWhite";
+        public const string navy = "Navy";
+        public const string oldLace = "OldLace";
+        public const string olive = "Olive";
+        public const string olivedrab = "Olivedrab";
+        public const string orange = "Orange";
+        public const string orangered = "Orangered";
+        public const string orchid = "Orchid";
+        public const string paleGoldenrod = "PaleGoldenrod";
+        public const string paleGreen = "PaleGreen";
+        public const string paleTurquoise = "PaleTurquoise";
+        public const string paleVioletred = "PaleVioletred";
+        public const string papayaWhip = "PapayaWhip";
+        public const string peachPuff = "PeachPuff";
+        public const string peru = "Peru";
+        public const string pink = "Pink";
+        public const string plum = "Plum";
+        public const string powderBlue = "PowderBlue";
+        public const string purple = "Purple";
+        public const string red = "Red";
+        public const string rosyBrown = "RosyBrown";
+        public const string royalBlue = "RoyalBlue";
+        public const string saddleBrown = "SaddleBrown";
+        public const string salmon = "Salmon";
+        public const string sandyBrown = "SandyBrown";
+        public const string seaGreen = "SeaGreen";
+        public const string seashell = "Seashell";
+        public const string sienna = "Sienna";
+        public const string silver = "Silver";
+        public const string skyBlue = "SkyBlue";
+        public const string slateBlue = "SlateBlue";
+        public const string slateGray = "SlateGray";
+        public const string snow = "Snow";
+        public const string springGreen = "SpringGreen";
+        public const string steelBlue = "SteelBlue";
+        public const string tan = "Tan";
+        public const string teal = "Teal";
+        public const string thistle = "Thistle";
+        public const string tomato = "Tomato";
+        public const string turquoise = "Turquoise";
+        public const string violet = "Violet";
+        public const string wheat = "Wheat";
+        public const string white = "White";
+        public const string whiteSmoke = "WhiteSmoke";
+        public const string yellow = "Yellow";
+        public const string yellowGreen = "YellowGreen";
+        public const string reunoYellow = "ReunoYellow";
+        public const string bestRed = "BestRed";
+        #endregion
 
         public static Dictionary<int, Color> ColorDictionary;
+        public static Dictionary<string, Color> ColorNameDictionary;
 
         public static Color RandomColor() {
             var random = Random.Range(0, 140);
@@ -173,9 +324,21 @@ namespace UnpopularOpinion.Tools {
             }
         }
 
+        public static Color GetColor(string index) {
+            if (ColorDictionary == null) {
+                InitializeDictionary();
+            }
+
+            if (ColorNameDictionary.TryGetValue(index, out var col)) {
+                return col;
+            }
+            else {
+                return Color.white;
+            }
+        }
+
         public static void InitializeDictionary() {
-            ColorDictionary = new Dictionary<int, Color>
-            {
+            ColorDictionary = new Dictionary<int, Color> {
                 { 0, AliceBlue },
                 { 1, AntiqueWhite },
                 { 2, Aqua },
@@ -319,6 +482,151 @@ namespace UnpopularOpinion.Tools {
                 { 140, ReunoYellow },
                 { 141, BestRed }
             };
+
+            ColorNameDictionary = new Dictionary<string, Color> {
+                { "AliceBlue", AliceBlue },
+                { "AntiqueWhite", AntiqueWhite },
+                { "Aqua", Aqua },
+                { "Aquamarine", Aquamarine },
+                { "Azure", Azure },
+                { "Beige", Beige },
+                { "Bisque", Bisque },
+                { "Black", Black },
+                { "BlanchedAlmond", BlanchedAlmond },
+                { "Blue", Blue },
+                { "BlueViolet", BlueViolet },
+                { "Brown", Brown },
+                { "Burlywood", Burlywood },
+                { "CadetBlue", CadetBlue },
+                { "Chartreuse", Chartreuse },
+                { "Chocolate", Chocolate },
+                { "Coral", Coral },
+                { "CornflowerBlue", CornflowerBlue },
+                { "Cornsilk", Cornsilk },
+                { "Crimson", Crimson },
+                { "Cyan", Cyan },
+                { "DarkBlue", DarkBlue },
+                { "DarkCyan", DarkCyan },
+                { "DarkGoldenrod", DarkGoldenrod },
+                { "DarkGray", DarkGray },
+                { "DarkGreen", DarkGreen },
+                { "DarkKhaki", DarkKhaki },
+                { "DarkMagenta", DarkMagenta },
+                { "DarkOliveGreen", DarkOliveGreen },
+                { "DarkOrange", DarkOrange },
+                { "DarkOrchid", DarkOrchid },
+                { "DarkRed", DarkRed },
+                { "DarkSalmon", DarkSalmon },
+                { "DarkSeaGreen", DarkSeaGreen },
+                { "DarkSlateBlue", DarkSlateBlue },
+                { "DarkSlateGray", DarkSlateGray },
+                { "DarkTurquoise", DarkTurquoise },
+                { "DarkViolet", DarkViolet },
+                { "DeepPink", DeepPink },
+                { "DeepSkyBlue", DeepSkyBlue },
+                { "DimGray", DimGray },
+                { "DodgerBlue", DodgerBlue },
+                { "FireBrick", FireBrick },
+                { "FloralWhite", FloralWhite },
+                { "ForestGreen", ForestGreen },
+                { "Fuchsia", Fuchsia },
+                { "Gainsboro", Gainsboro },
+                { "GhostWhite", GhostWhite },
+                { "Gold", Gold },
+                { "Goldenrod", Goldenrod },
+                { "Gray", Gray },
+                { "Green", Green },
+                { "GreenYellow", GreenYellow },
+                { "Honeydew", Honeydew },
+                { "HotPink", HotPink },
+                { "IndianRed", IndianRed },
+                { "Indigo", Indigo },
+                { "Ivory", Ivory },
+                { "Khaki", Khaki },
+                { "Lavender", Lavender },
+                { "Lavenderblush", Lavenderblush },
+                { "LawnGreen", LawnGreen },
+                { "LemonChiffon", LemonChiffon },
+                { "LightBlue", LightBlue },
+                { "LightCoral", LightCoral },
+                { "LightCyan", LightCyan },
+                { "LightGoldenodYellow", LightGoldenodYellow },
+                { "LightGray", LightGray },
+                { "LightGreen", LightGreen },
+                { "LightPink", LightPink },
+                { "LightSalmon", LightSalmon },
+                { "LightSeaGreen", LightSeaGreen },
+                { "LightSkyBlue", LightSkyBlue },
+                { "LightSlateGray", LightSlateGray },
+                { "LightSteelBlue", LightSteelBlue },
+                { "LightYellow", LightYellow },
+                { "Lime", Lime },
+                { "LimeGreen", LimeGreen },
+                { "Linen", Linen },
+                { "Magenta", Magenta },
+                { "Maroon", Maroon },
+                { "MediumAquamarine", MediumAquamarine },
+                { "MediumBlue", MediumBlue },
+                { "MediumOrchid", MediumOrchid },
+                { "MediumPurple", MediumPurple },
+                { "MediumSeaGreen", MediumSeaGreen },
+                { "MediumSlateBlue", MediumSlateBlue },
+                { "MediumSpringGreen", MediumSpringGreen },
+                { "MediumTurquoise", MediumTurquoise },
+                { "MediumVioletRed", MediumVioletRed },
+                { "MidnightBlue", MidnightBlue },
+                { "Mintcream", Mintcream },
+                { "MistyRose", MistyRose },
+                { "Moccasin", Moccasin },
+                { "NavajoWhite", NavajoWhite },
+                { "Navy", Navy },
+                { "OldLace", OldLace },
+                { "Olive", Olive },
+                { "Olivedrab", Olivedrab },
+                { "Orange", Orange },
+                { "Orangered", Orangered },
+                { "Orchid", Orchid },
+                { "PaleGoldenrod", PaleGoldenrod },
+                { "PaleGreen", PaleGreen },
+                { "PaleTurquoise", PaleTurquoise },
+                { "PaleVioletred", PaleVioletred },
+                { "PapayaWhip", PapayaWhip },
+                { "PeachPuff", PeachPuff },
+                { "Peru", Peru },
+                { "Pink", Pink },
+                { "Plum", Plum },
+                { "PowderBlue", PowderBlue },
+                { "Purple", Purple },
+                { "Red", Red },
+                { "RosyBrown", RosyBrown },
+                { "RoyalBlue", RoyalBlue },
+                { "SaddleBrown", SaddleBrown },
+                { "Salmon", Salmon },
+                { "SandyBrown", SandyBrown },
+                { "SeaGreen", SeaGreen },
+                { "Seashell", Seashell },
+                { "Sienna", Sienna },
+                { "Silver", Silver },
+                { "SkyBlue", SkyBlue },
+                { "SlateBlue", SlateBlue },
+                { "SlateGray", SlateGray },
+                { "Snow", Snow },
+                { "SpringGreen", SpringGreen },
+                { "SteelBlue", SteelBlue },
+                { "Tan", Tan },
+                { "Teal", Teal },
+                { "Thistle", Thistle },
+                { "Tomato", Tomato },
+                { "Turquoise", Turquoise },
+                { "Violet", Violet },
+                { "Wheat", Wheat },
+                { "White", White },
+                { "WhiteSmoke", WhiteSmoke },
+                { "Yellow", Yellow },
+                { "YellowGreen", YellowGreen },
+                { "ReunoYellow", ReunoYellow },
+                { "BestRed", BestRed }
+            };
         }
 
         /// <summary>
@@ -329,12 +637,7 @@ namespace UnpopularOpinion.Tools {
         /// <param name="max"></param>
         /// <returns></returns>
         public static Color MMRandomColor(this Color color, Color min, Color max) {
-            var c = new Color() {
-                r = UnityEngine.Random.Range(min.r, max.r),
-                g = UnityEngine.Random.Range(min.g, max.g),
-                b = UnityEngine.Random.Range(min.b, max.b),
-                a = UnityEngine.Random.Range(min.a, max.a)
-            };
+            var c = new Color() { r = UnityEngine.Random.Range(min.r, max.r), g = UnityEngine.Random.Range(min.g, max.g), b = UnityEngine.Random.Range(min.b, max.b), a = UnityEngine.Random.Range(min.a, max.a) };
 
             return c;
         }
@@ -346,16 +649,7 @@ namespace UnpopularOpinion.Tools {
         /// <param name="alpha">the alpha to use for both ends of the gradient</param>
         /// <returns></returns>
         public static Gradient FlatGradient(Color32 color, float alpha = 1f) {
-            return new Gradient() {
-                colorKeys = new GradientColorKey[2]
-                {
-                    new(color, 0), new(color, 1f)
-                },
-                alphaKeys = new GradientAlphaKey[2]
-                {
-                    new(alpha, 0), new(alpha, 1)
-                }
-            };
+            return new Gradient() { colorKeys = new GradientColorKey[2] { new(color, 0), new(color, 1f) }, alphaKeys = new GradientAlphaKey[2] { new(alpha, 0), new(alpha, 1) } };
         }
 
         /// <summary>
@@ -366,20 +660,9 @@ namespace UnpopularOpinion.Tools {
         /// <param name="startAlpha">the alpha to use for the left side of the gradient</param>
         /// <param name="endAlpha">the alpha to use for the right side of the gradient</param>
         /// <returns></returns>
-        public static Gradient SimpleGradient(Color32 startColor, Color32 endColor, float startAlpha = 1f,
-            float endAlpha = 1f) {
-            return new Gradient() {
-                colorKeys = new GradientColorKey[2]
-                {
-                    new(startColor, 0), new(endColor, 1f)
-                },
-                alphaKeys = new GradientAlphaKey[2]
-                {
-                    new(startAlpha, 0), new(endAlpha, 1)
-                }
-            };
+        public static Gradient SimpleGradient(Color32 startColor, Color32 endColor, float startAlpha = 1f, float endAlpha = 1f) {
+            return new Gradient() { colorKeys = new GradientColorKey[2] { new(startColor, 0), new(endColor, 1f) }, alphaKeys = new GradientAlphaKey[2] { new(startAlpha, 0), new(endAlpha, 1) } };
         }
-
 
         /// <summary>
         /// Tint : Uses HSV color conversions, keeps the original values, multiplies alpha
@@ -388,7 +671,14 @@ namespace UnpopularOpinion.Tools {
         /// ReplaceKeepAlpha : color is replaced but the original alpha channel is ignored
         /// Add : target color gets added (including its alpha)
         /// </summary>
-        public enum ColoringMode { Tint, Multiply, Replace, ReplaceKeepAlpha, Add }
+        public enum ColoringMode
+        {
+            Tint,
+            Multiply,
+            Replace,
+            ReplaceKeepAlpha,
+            Add
+        }
 
         public static Color MMColorize(this Color originalColor, Color targetColor, ColoringMode coloringMode, float lerpAmount = 1.0f) {
             var resultColor = Color.white;
@@ -400,7 +690,7 @@ namespace UnpopularOpinion.Tools {
                     resultColor = Color.HSVToRGB(t_h, t_s, s_v * t_v);
                     resultColor.a = originalColor.a * targetColor.a;
                 }
-                break;
+                    break;
                 case ColoringMode.Multiply:
                     resultColor = originalColor * targetColor;
                     break;
@@ -417,7 +707,9 @@ namespace UnpopularOpinion.Tools {
                 default:
                     break;
             }
+
             return Color.Lerp(originalColor, resultColor, lerpAmount);
         }
     }
+
 }
