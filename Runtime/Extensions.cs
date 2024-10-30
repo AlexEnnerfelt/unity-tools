@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 using Random = System.Random;
 
 public static class Extensions
@@ -237,6 +238,7 @@ public static class Extensions
         var max = Mathf.Max(size.x, size.y);
         var sizePercentage = new Vector2((size.x / max) * 100f, (size.y / max) * 100f);
 
+        element.style.flexGrow = new(0f);
         element.style.width = new() {
             value = new() {
                 value = sizePercentage.x,
