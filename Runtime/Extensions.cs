@@ -230,15 +230,34 @@ public static class Extensions
         return self.parameters.Any(currParam => currParam.type == type && currParam.name == name);
     }
 
+    public static bool HasParameter(this Animator self, string name, out AnimatorControllerParameterType type) {
+        if (string.IsNullOrEmpty(name)) {
+            type = 0;
+            return false;
+        }
+
+        if (self.parameters.Any(currParam => currParam.name == name)) {
+            var param = self.parameters.First(currParam => currParam.name == name);
+            type = param.type;
+            return true;
+        }
+        else {
+            type = 0;
+            return false;
+        }
+    }
+
     public static void FitSlicedSpriteIntoElement(this VisualElement element, Sprite sprite) {
         var spriteBorder = sprite.border;
         var rectSize = sprite.textureRect;
 
-        var size = new Vector2(rectSize.size.x - (spriteBorder.x + spriteBorder.z), rectSize.size.y - (spriteBorder.w + spriteBorder.y));
-        var max = Mathf.Max(size.x, size.y);
-        var sizePercentage = new Vector2((size.x / max) * 100f, (size.y / max) * 100f);
+        var slicedActualSize = new Vector2(rectSize.size.x - (spriteBorder.x + spriteBorder.z), rectSize.size.y - (spriteBorder.w + spriteBorder.y));
 
-        element.style.flexGrow = new(0f);
+        var parentSize = element.parent.contentRect.size;
+
+        var max = Mathf.Max(slicedActualSize.x, slicedActualSize.y);
+        var sizePercentage = new Vector2((slicedActualSize.x / max) * 100f, (slicedActualSize.y / max) * 100f);
+
         element.style.width = new() {
             value = new() {
                 value = sizePercentage.x,
@@ -257,7 +276,16 @@ public static class Extensions
         element.style.unitySliceLeft = 0;
         element.style.unitySliceRight = 0;
 
-        element.style.backgroundImage = new StyleBackground(sprite);
+        element.style.backgroundImage = new StyleBackground() {
+            value = new() {
+                sprite = sprite
+            },
+        };
+        element.style.backgroundSize = new StyleBackgroundSize() {
+            value = new BackgroundSize() {
+                sizeType = BackgroundSizeType.Contain
+            }
+        };
     }
 }
 
@@ -265,6 +293,19 @@ public static class ListExtensions
 {
     public static T TakeRandom<T>(this IEnumerable<T> enumerable) {
         if (!enumerable.Any()) {
+            throw new InvalidOperationException("Cannot select a random item from an empty set");
+        }
+
+        T item;
+        do {
+            item = enumerable.ElementAt(RandomUtility.globalRandomizer.Next(enumerable.Count()));
+        } while (item == null);
+
+        return item;
+    }
+    public static T TakeRandomOrDefault<T>(this IEnumerable<T> enumerable) {
+        if (!enumerable.Any()) {
+            return default;
             throw new InvalidOperationException("Cannot select a random item from an empty set");
         }
 
