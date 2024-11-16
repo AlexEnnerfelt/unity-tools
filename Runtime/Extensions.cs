@@ -248,10 +248,7 @@ public static class Extensions
     }
 
     public static void FitSlicedSpriteIntoElement(this VisualElement element, Sprite sprite) {
-        var spriteBorder = sprite.border;
-        var rectSize = sprite.textureRect;
-
-        var slicedActualSize = new Vector2(rectSize.size.x - (spriteBorder.x + spriteBorder.z), rectSize.size.y - (spriteBorder.w + spriteBorder.y));
+        var slicedActualSize = sprite.GetSlicedSize();
 
         var parentSize = element.parent.contentRect.size;
 
@@ -286,6 +283,58 @@ public static class Extensions
                 sizeType = BackgroundSizeType.Contain
             }
         };
+    }
+    public static void FitSpriteHeightIntoElement(this VisualElement element, Sprite sprite) {
+        //Store the height, should not be changed
+        var height = element.layout.height;
+        if (sprite.bounds.extents.magnitude is 0) {
+            element.style.backgroundImage = new StyleBackground() {
+                value = new() {
+                    sprite = sprite
+                },
+            };
+            return;
+        }
+        
+        //The the sliced sprite values
+        var slicedSprite = sprite.GetSlicedSize();
+
+        var scale = height / slicedSprite.y;
+
+        var scaledSize = new Vector2Int((int)(slicedSprite.x * scale), (int)(slicedSprite.y * scale));
+
+        element.style.width = scaledSize.x;
+        element.style.minWidth = scaledSize.x;
+        element.style.maxWidth = scaledSize.x;
+        
+        element.style.height = scaledSize.y;
+        element.style.minHeight = scaledSize.y;
+        element.style.maxHeight = scaledSize.y;
+
+        //Set the slice values
+        element.style.unitySliceScale = 0f;
+        element.style.unitySliceBottom = (int)sprite.border.y;
+        element.style.unitySliceTop = (int)sprite.border.w;
+        element.style.unitySliceLeft = (int)sprite.border.x;
+        element.style.unitySliceRight = (int)sprite.border.z;
+        
+        element.style.backgroundImage = new StyleBackground() {
+            value = new() {
+                sprite = sprite
+            },
+        };
+        element.style.backgroundSize = new StyleBackgroundSize() {
+            value = new BackgroundSize() {
+                sizeType = BackgroundSizeType.Contain
+            }
+        };  
+    }
+
+    public static Vector2 GetSlicedSize(this Sprite sprite) {
+        var spriteBorder = sprite.border;
+        var rectSize = sprite.textureRect;
+        var slicedActualSize = new Vector2( rectSize.size.x - (spriteBorder.x + spriteBorder.z), rectSize.size.y - (spriteBorder.w + spriteBorder.y));
+        return slicedActualSize;
     }
 }
 
