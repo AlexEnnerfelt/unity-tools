@@ -5,9 +5,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace UnpopularOpinion.UICore {
-    public abstract class UIMenu : UIDisplay {
-
-
+    public abstract class UIMenu : UIDisplay
+    {
         private static List<UIMenu> _menus = new();
         public static bool IsMenuUpen {
             get {
@@ -41,7 +40,6 @@ namespace UnpopularOpinion.UICore {
         }
         public override void Initialization() {
             base.Initialization();
-            Close();
         }
         public virtual void Open() {
             if (!enabled) {
@@ -67,10 +65,7 @@ namespace UnpopularOpinion.UICore {
             isFocused = false;
             OnBlur?.Invoke();
         }
-        protected override void Evaluate() {
-            base.Evaluate();
-            Root.style.display = IsOpen ? DisplayStyle.Flex : DisplayStyle.None;
-        }
+        
         private CancellationTokenSource _focusCancellationToken = new();
 
         public virtual async void Focus() {
@@ -90,5 +85,7 @@ namespace UnpopularOpinion.UICore {
             OnFocus?.Invoke();
             _focusCancellationToken.Cancel();
         }
+
+  
     }
 }

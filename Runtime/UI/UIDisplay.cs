@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Mono.CSharp;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,6 +9,8 @@ namespace UnpopularOpinion.UICore
 
     public class UIDisplay : MonoBehaviour, IUIElementsInit, IUIDisplay
     {
+        [SerializeField]
+        protected HandlingMethod handlingMethod = HandlingMethod.Display;
         public VisualElement Root { get; protected set; }
         protected UIDocument _document;
         protected static UIDisplay fade;
@@ -20,7 +23,6 @@ namespace UnpopularOpinion.UICore
         public virtual void Awake() {
             if (TryGetComponent(out _document)) {
                 _document.enabled = true;
-                //SetUp(_document.rootVisualElement);
                 if (string.IsNullOrEmpty(RootElementName)) {
                     SetUp(_document.rootVisualElement);
                 }
@@ -35,6 +37,7 @@ namespace UnpopularOpinion.UICore
 
         public void Start() {
             Initialization();
+            SetInitialState();
         }
         public virtual void SetUp(VisualElement root) {
             Root = root;
@@ -43,15 +46,38 @@ namespace UnpopularOpinion.UICore
 
         public virtual void Initialization() {
         }
+        protected virtual void SetInitialState() {
+            
+        }
         public virtual void Show() {
-            Root.visible = true;
+            IsOpen = true;
+            Evaluate();
         }
         public virtual void Hide() {
-            Root.visible = false;
+            IsOpen = false;
+            Evaluate();
         }
 
         protected virtual void Evaluate() {
-            Root.visible = IsOpen;
+            if (handlingMethod is HandlingMethod.Display) {
+                Root.style.display = IsOpen ? DisplayStyle.Flex : DisplayStyle.None;
+            }
+            else if (handlingMethod is HandlingMethod.Visibility) {
+                Root.visible = IsOpen;
+            }
+            else if (handlingMethod is HandlingMethod.Hierarchy) {
+                _document.enabled = IsOpen;
+                if (IsOpen) {
+                    if (string.IsNullOrEmpty(RootElementName)) {
+                        SetUp(_document.rootVisualElement);
+                        
+                    }
+                    else {
+                        SetUp(_document.rootVisualElement.Q<VisualElement>(RootElementName));
+                    }
+                    Initialization();
+                }
+            }
         }
         public static void RegisterForGlobalEventsRecursive(VisualElement visualElement) {
             if (visualElement == null) {
@@ -103,13 +129,13 @@ namespace UnpopularOpinion.UICore
                 });
             }
         }
-    }
 
-    public enum UIOpenMethod
-    {
-        Display,
-        Visibility,
-        Hierarchy
+        protected enum HandlingMethod
+        {
+            Display,
+            Visibility,
+            Hierarchy
+        }
     }
 
     public interface IUIElementsInit
