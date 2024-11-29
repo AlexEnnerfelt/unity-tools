@@ -180,5 +180,10 @@ namespace UnpopularOpinion.UICore
             });
         }
     }
+        
+    public interface IViewController<in T>
+    {
+        public void SetModel(T model);
+    }
 
 }

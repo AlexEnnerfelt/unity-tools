@@ -246,7 +246,13 @@ public static class Extensions
             return false;
         }
     }
-
+    public static bool IsSliced(this Sprite sprite) {
+        return 
+            sprite.border.x is not 0 || 
+            sprite.border.y is not 0 || 
+            sprite.border.z is not 0 || 
+            sprite.border.w is not 0;
+    }
     public static void FitSlicedSpriteIntoElement(this VisualElement element, Sprite sprite) {
         var slicedActualSize = sprite.GetSlicedSize();
 
