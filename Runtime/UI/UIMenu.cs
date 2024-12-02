@@ -38,11 +38,8 @@ namespace UnpopularOpinion.UICore {
             _menus.Add(this);
             base.Awake();
         }
-        public override void Initialization() {
-            base.Initialization();
-        }
         public virtual void Open() {
-            if (!enabled) {
+            if (!enabled || IsOpen) {
                 return;
             }
             IsOpen = true;
