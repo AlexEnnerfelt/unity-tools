@@ -126,6 +126,14 @@ namespace UnpopularOpinion.Tools.SpriteColorPalette {
                 updateTrigger = BindingUpdateTrigger.EveryUpdate,
             });
         }
+
+
+
+        private SpriteRenderer _selected;
+        private Color _previousColor;
+        private Color _appliedColor;
+        
+        
         private void OnSceneGUI(SceneView sceneView) {
             SpriteRenderer[] allRenderers;
             if (_debug) {
@@ -142,6 +150,34 @@ namespace UnpopularOpinion.Tools.SpriteColorPalette {
                 return;
             }
             var e = Event.current;
+            if (e.type == EventType.MouseMove) {
+                Vector2 mousePosition = HandleUtility.GUIPointToWorldRay(e.mousePosition).origin;
+                allRenderers = FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None);
+
+                var withinBounds = allRenderers.Where(rend => rend.bounds.Contains(mousePosition)).ToList();
+                //var withinSprite = withinBounds.Where(rend => IsPointInSprite(rend, mousePosition)).ToList();
+                var selected = withinBounds.FirstOrDefault();
+
+                if (selected == null) {
+                    return;
+                }
+                
+                if (_selected != selected) {
+                    if (_selected != null) {
+                        _selected.color = _previousColor;
+                    }
+                    _appliedColor = CurrentColor.GetColor();
+                    _previousColor = _selected.color;
+                }
+                else {
+                    
+                }
+                
+                _selected = selected;
+                _selected.color = _appliedColor;
+                
+                Debug.Log(_selected);
+            }
             if (e.type == EventType.MouseDown && e.button == 0) {
                 // Get the mouse position in world space
                 Vector2 mousePosition = HandleUtility.GUIPointToWorldRay(e.mousePosition).origin;
@@ -152,17 +188,16 @@ namespace UnpopularOpinion.Tools.SpriteColorPalette {
                 // Find the renderer under the mouse cursor
                 var withinBounds = allRenderers.Where(rend => rend.bounds.Contains(mousePosition)).ToList();
                 var withinSprite = withinBounds.Where(rend => IsPointInSprite(rend, mousePosition)).ToList();
-                IEnumerable<SpriteRenderer> orderedSprites;
+                IEnumerable<SpriteRenderer> orderedSprites = withinSprite;
 
-                if (withinSprite.Count > 0) {
-                    orderedSprites = withinSprite.OrderByDescending(rend => rend.sortingOrder);
-                } else if (withinBounds.Count > 0) {
-                    orderedSprites = withinBounds.OrderByDescending(rend => rend.sortingOrder);
-                } else {
-                    return;
-                }
-
-                if (orderedSprites.Count() > 0) {
+                // if (withinSprite.Count > 0) {
+                //     orderedSprites = withinSprite.OrderByDescending(rend => rend.sortingOrder);
+                // } else if (withinBounds.Count > 0) {
+                //     orderedSprites = withinBounds.OrderByDescending(rend => rend.sortingOrder);
+                // } else {
+                //     return;
+                // }
+                if (orderedSprites.Any()) {
                     var topSprite = orderedSprites.FirstOrDefault();
 
                     if (topSprite != null) {
@@ -211,7 +246,12 @@ namespace UnpopularOpinion.Tools.SpriteColorPalette {
         }
         private void LoadColorsFromPlayerPrefs() {
             var json = PlayerPrefs.GetString("SavedColors", string.Empty);
-            _colors = JsonConvert.DeserializeObject<List<ColorSelection>>(json, new ColorConverter());
+            if (!string.IsNullOrEmpty(json)) {
+                _colors = JsonConvert.DeserializeObject<List<ColorSelection>>(json, new ColorConverter());
+            }
+            else {
+                _colors = new();
+            }
         }
 
         public class ColorPalette {
@@ -226,8 +266,10 @@ namespace UnpopularOpinion.Tools.SpriteColorPalette {
                 var foldout = root.Q<Foldout>();
                 foldout.text = "Palette";
                 _optionsList.Clear();
-                foreach (var item in palette) {
-                    _optionsList.Add(AddSelectionButton(item));
+                if (palette is not null) {
+                    foreach (var item in palette) {
+                        _optionsList.Add(AddSelectionButton(item));
+                    }
                 }
                 _addOptionButton = new Button();
                 _optionsList.Add(_addOptionButton);
