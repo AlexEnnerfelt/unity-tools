@@ -12,10 +12,34 @@ namespace UnpopularOpinion.TopDown {
         {
 
 #if !UNPOP_NETCODE
-        public const bool IsOwner = true;
-        public const bool IsSpawned = false;
+        public readonly bool IsOwner = true;
+        public readonly bool IsServer = true;
+        public readonly bool IsOwnedByServer = true;
+        public readonly bool IsLocalPlayer = true;
+        public readonly bool IsSpawned = false;
+        public readonly ulong LocalClientId = 0;
+        public readonly ulong OwnerClientId = 0;
+        public NetworkObject NetworkObject => null;
+        public NetworkManager NetworkManager => null;
+        public ulong NetworkObjectId => 0;
+        public bool IsNetcodeActive => false;
+        public virtual void OnNetworkSpawn() {
+        }
+        public virtual void OnNetworkDespawn() { 
+        }
+        public virtual void OnDestroy()
+        {
 
-#endif
+        }
+        protected virtual void OnNetworkPostSpawn()
+        {
+
+        }
+        protected virtual void OnNetworkPreSpawn(ref NetworkManager networkManager)
+        {
+
+        }
+#else
         public ulong LocalClientId => NetworkManager.LocalClientId;
         public bool IsNetcodeActive {
             get {
@@ -23,6 +47,7 @@ namespace UnpopularOpinion.TopDown {
                 return NetworkObject != null && NetworkManager != null && NetworkManager.IsListening && NetworkObject.IsSpawned;
             }
         }
+#endif
 
         public const string iconPath = "Assets/Plugins/Unpopular-Topdown/Editor/";
         public const string addComponent = "Unpopular Topdown/";
