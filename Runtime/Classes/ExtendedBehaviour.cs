@@ -49,7 +49,7 @@ namespace UnpopularOpinion.TopDown {
         }
 #endif
 
-        public const string iconPath = "Assets/Plugins/Unpopular-Topdown/Editor/";
+        public const string iconPath = "Assets/Editor/Gizmos/";
         public const string addComponent = "Unpopular Topdown/";
 
         public void Print(string message) {
