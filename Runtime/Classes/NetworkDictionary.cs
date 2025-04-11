@@ -6,6 +6,7 @@ using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 
 namespace Unity.Netcode {
+#if NETCODE
 	/// <summary>
 	/// Event based NetworkVariable container for syncing Dictionaries
 	/// </summary>
@@ -520,4 +521,5 @@ namespace Unity.Netcode {
 		/// </summary>
 		public TValue PreviousValue;
 	}
+#endif
 }
